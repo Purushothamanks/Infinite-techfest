@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "Infinite Techfest 2026",
+    "slug": "infinite-techfest-2026",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/App/infinite-techfest-app-icon.png",
+    "scheme": "infinitetechfest",
+    "userInterfaceStyle": "light",
+    "android": {
+      "package": "com.rpsit.infinitetechfest2026",
+      "adaptiveIcon": {
+        "backgroundColor": "#FFFFFF",
+        "foregroundImage": "./assets/images/Branding/android-icon-foreground.png",
+        "backgroundImage": "./assets/images/Branding/android-icon-background.png",
+        "monochromeImage": "./assets/images/Branding/android-icon-monochrome.png"
+      }
+    },
+    "ios": {
+      "bundleIdentifier": "com.rpsit.infinitetechfest2026",
+      "supportsTablet": false
+    },
+    "web": {
+      "output": "static",
+      "favicon": "./assets/images/App/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#FFFFFF",
+          "image": "./assets/images/App/splash-icon.png",
+          "imageWidth": 160
+        }
+      ],
+      "expo-secure-store",
+      "expo-font"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
