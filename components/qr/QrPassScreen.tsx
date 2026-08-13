@@ -11,6 +11,7 @@ import {
 import React, { useState } from "react";
 import {
   Alert,
+  Image,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -22,6 +23,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { StudentBottomNav } from "@/components/dashboard/StudentBottomNav";
 import { useAuthStore } from "@/store/authStore";
 import { colors, shadows } from "@/theme";
+
+const RPSIT_LOGO = require("@/assets/images/RPSIT/RPSIT Logo.png");
 
 export function QrPassScreen() {
   const user = useAuthStore((state) => state.user);
@@ -62,6 +65,12 @@ export function QrPassScreen() {
           >
             {/* Top Ticket Header */}
             <View className="bg-primary p-5 items-center">
+              <Image
+                source={RPSIT_LOGO}
+                resizeMode="contain"
+                className="h-10 w-32 mb-1"
+                accessibilityLabel="RPSIT Institution Logo"
+              />
               <Text className="font-poppins-semibold text-xs text-accent uppercase tracking-widest">
                 R.P. Sarathy Institute of Technology
               </Text>
