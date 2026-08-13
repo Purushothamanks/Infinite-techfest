@@ -32,7 +32,7 @@ function DashboardHeaderBase({
   const displayName = fullName.trim().length > 0 ? fullName.trim() : "your";
 
   return (
-    <View className="flex-row items-center justify-between px-6 py-2.5 bg-surface border-b border-border/50">
+    <View className="flex-row items-center justify-between px-5 py-3 bg-surface border-b border-border/50">
       <TouchableOpacity
         onPress={() => router.push(ROUTES.HOME)}
         activeOpacity={0.8}
@@ -41,7 +41,7 @@ function DashboardHeaderBase({
         <Image
           source={LOGO_ASSET}
           resizeMode="contain"
-          style={{ width: 165, height: 36 }}
+          style={{ width: 225, height: 48 }}
           accessibilityRole="image"
           accessibilityLabel="Infinite Techfest 2026"
         />
