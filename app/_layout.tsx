@@ -96,12 +96,12 @@ const styles = StyleSheet.create({
   webPhoneFrame: {
     flex: 1,
     width: "100%",
-    maxWidth: 430,
+    maxWidth: 440,
     height: "100%",
     maxHeight: 900,
     backgroundColor: colors.background,
-    borderRadius: 24,
+    borderRadius: 0, // Clean straight screen edges
     overflow: "hidden",
-    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.4)",
+    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
   },
 });
