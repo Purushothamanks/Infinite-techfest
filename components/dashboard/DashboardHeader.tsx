@@ -7,7 +7,7 @@ import { AvatarPlaceholder } from "@/components/dashboard/AvatarPlaceholder";
 import { ROUTES } from "@/constants/navigation";
 import { colors } from "@/theme";
 
-const LOGO_ASSET = require("@/assets/images/Branding/infinite-techfest-horizontal.png");
+const BRAND_ICON = require("@/assets/images/Branding/infinite-techfest-icon.png");
 
 const BELL_ICON_SIZE = 22;
 const AVATAR_SIZE = 44;
@@ -32,21 +32,31 @@ function DashboardHeaderBase({
   const displayName = fullName.trim().length > 0 ? fullName.trim() : "your";
 
   return (
-    <View className="flex-row items-center justify-between px-5 py-3 bg-surface border-b border-border/50">
+    <View className="flex-row items-center justify-between px-4 py-3 bg-surface border-b border-border">
+      {/* Left: Brand Logo Icon + Typography */}
       <TouchableOpacity
         onPress={() => router.push(ROUTES.HOME)}
-        activeOpacity={0.8}
-        className="flex-row items-center"
+        activeOpacity={0.85}
+        className="flex-row items-center gap-2.5 flex-1 pr-2"
       >
         <Image
-          source={LOGO_ASSET}
+          source={BRAND_ICON}
           resizeMode="contain"
-          style={{ width: 225, height: 48 }}
+          style={{ width: 42, height: 42, borderRadius: 10 }}
           accessibilityRole="image"
-          accessibilityLabel="Infinite Techfest 2026"
+          accessibilityLabel="Infinite Techfest Logo Icon"
         />
+        <View className="justify-center">
+          <Text className="font-poppins-bold text-base leading-tight text-primary">
+            INFINITE TECHFEST
+          </Text>
+          <Text className="font-poppins-semibold text-[11px] leading-tight text-accent tracking-wide">
+            2026 • RPSIT
+          </Text>
+        </View>
       </TouchableOpacity>
 
+      {/* Right: Actions */}
       <View className="flex-row items-center gap-2.5">
         <TouchableOpacity
           onPress={() => router.push(ROUTES.NOTIFICATIONS)}
