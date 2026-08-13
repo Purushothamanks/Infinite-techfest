@@ -51,11 +51,6 @@ export default function RootLayout() {
   );
 }
 
-/**
- * Mobile Viewport Wrapper:
- * Ensures clean mobile device aspect ratio on web browsers with explicit flex styles,
- * preventing layout collapse or overlapped views.
- */
 function MobileViewportWrapper({ children }: { children: React.ReactNode }) {
   if (Platform.OS !== "web") {
     return <View style={styles.nativeContainer}>{children}</View>;
@@ -70,7 +65,7 @@ function MobileViewportWrapper({ children }: { children: React.ReactNode }) {
 
 function RootNavigator() {
   const status = useAuthStore((state) => state.status);
-  const isAuthenticated = true; // TEMP-QA-BYPASS: status === "authenticated";
+  const isAuthenticated = status === "authenticated";
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
@@ -94,14 +89,14 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
-    backgroundColor: "#0F172A", // Dark Slate backdrop
+    backgroundColor: "#0F172A",
     alignItems: "center",
     justifyContent: "center",
   },
   webPhoneFrame: {
     flex: 1,
     width: "100%",
-    maxWidth: 440,
+    maxWidth: 430,
     height: "100%",
     maxHeight: 900,
     backgroundColor: colors.background,

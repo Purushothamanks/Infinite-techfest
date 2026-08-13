@@ -9,8 +9,8 @@ import { colors } from "@/theme";
 
 const LOGO_ASSET = require("@/assets/images/Branding/infinite-techfest-horizontal.png");
 
-const BELL_ICON_SIZE = 24;
-const AVATAR_SIZE = 52;
+const BELL_ICON_SIZE = 22;
+const AVATAR_SIZE = 44;
 const MAX_BADGE_COUNT = 9;
 
 interface DashboardHeaderProps {
@@ -19,14 +19,6 @@ interface DashboardHeaderProps {
   unreadNotificationCount: number;
 }
 
-/**
- * Top header for the Student Home Dashboard: brand wordmark, notification
- * bell (with unread badge), and profile avatar, per
- * Designs/Student Module/1. STUDENT HOME DASHBOARD UI DESIGN.png.
- *
- * Navigates to the Notifications and Profile placeholder routes (see
- * constants/navigation.ts ROUTES doc) — no business logic lives here.
- */
 function DashboardHeaderBase({
   avatarUrl,
   fullName,
@@ -40,18 +32,22 @@ function DashboardHeaderBase({
   const displayName = fullName.trim().length > 0 ? fullName.trim() : "your";
 
   return (
-    <View className="flex-row items-center justify-between px-6 py-3">
-      <View>
+    <View className="flex-row items-center justify-between px-6 py-2.5 bg-surface border-b border-border/50">
+      <TouchableOpacity
+        onPress={() => router.push(ROUTES.HOME)}
+        activeOpacity={0.8}
+        className="flex-row items-center"
+      >
         <Image
           source={LOGO_ASSET}
           resizeMode="contain"
-          className="h-11 w-[190px]"
+          style={{ width: 165, height: 36 }}
           accessibilityRole="image"
           accessibilityLabel="Infinite Techfest 2026"
         />
-      </View>
+      </TouchableOpacity>
 
-      <View className="flex-row items-center gap-3">
+      <View className="flex-row items-center gap-2.5">
         <TouchableOpacity
           onPress={() => router.push(ROUTES.NOTIFICATIONS)}
           accessibilityRole="button"
@@ -60,13 +56,12 @@ function DashboardHeaderBase({
               ? `Notifications, ${unreadNotificationCount} unread`
               : "Notifications"
           }
-          accessibilityHint="Opens your notifications"
-          className="h-11 w-11 items-center justify-center rounded-full"
+          className="h-10 w-10 items-center justify-center rounded-full bg-background border border-border"
           hitSlop={4}
         >
-          <Bell size={BELL_ICON_SIZE} color={colors.text.primary} />
+          <Bell size={BELL_ICON_SIZE} color={colors.primary} />
           {unreadNotificationCount > 0 ? (
-            <View className="absolute right-1 top-0.5 h-4 min-w-4 items-center justify-center rounded-full bg-error px-1">
+            <View className="absolute -right-0.5 -top-0.5 h-4 min-w-4 items-center justify-center rounded-full bg-error px-1">
               <Text className="font-poppins-semibold text-[10px] leading-none text-text-inverse">
                 {badgeLabel}
               </Text>
@@ -83,14 +78,14 @@ function DashboardHeaderBase({
             <Image
               source={{ uri: avatarUrl }}
               style={{ width: AVATAR_SIZE, height: AVATAR_SIZE }}
-              className="rounded-full border border-border"
+              className="rounded-full border border-primary/30"
               accessibilityRole="image"
               accessibilityLabel="Your profile photo"
             />
           ) : (
             <View
               style={{ width: AVATAR_SIZE, height: AVATAR_SIZE }}
-              className="items-center justify-center overflow-hidden rounded-full border border-border bg-primary/5"
+              className="items-center justify-center overflow-hidden rounded-full border border-primary/30 bg-primary/5"
               accessibilityRole="image"
               accessibilityLabel={`${displayName} profile picture placeholder`}
             >
