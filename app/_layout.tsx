@@ -4,7 +4,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import { Platform, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -12,6 +12,7 @@ import { AuthProvider } from "@/providers/AuthProvider";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { useAuthStore } from "@/store/authStore";
+import { colors } from "@/theme";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -52,19 +53,17 @@ export default function RootLayout() {
 
 /**
  * Mobile Viewport Wrapper:
- * Enforces a mobile device aspect ratio and frame on desktop web browsers,
- * while expanding 100% full screen on actual mobile devices and narrow viewports.
+ * Ensures clean mobile device aspect ratio on web browsers with explicit flex styles,
+ * preventing layout collapse or overlapped views.
  */
 function MobileViewportWrapper({ children }: { children: React.ReactNode }) {
   if (Platform.OS !== "web") {
-    return <View className="flex-1 bg-background">{children}</View>;
+    return <View style={styles.nativeContainer}>{children}</View>;
   }
 
   return (
-    <View className="flex-1 w-full h-full bg-slate-900 items-center justify-center">
-      <View className="w-full max-w-[430px] h-full sm:h-[92vh] sm:max-h-[920px] bg-background sm:rounded-[36px] sm:shadow-2xl overflow-hidden sm:border-4 sm:border-slate-800 flex-1">
-        {children}
-      </View>
+    <View style={styles.webOuterBackground}>
+      <View style={styles.webPhoneFrame}>{children}</View>
     </View>
   );
 }
@@ -85,3 +84,29 @@ function RootNavigator() {
     </Stack>
   );
 }
+
+const styles = StyleSheet.create({
+  nativeContainer: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  webOuterBackground: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#0F172A", // Dark Slate backdrop
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  webPhoneFrame: {
+    flex: 1,
+    width: "100%",
+    maxWidth: 440,
+    height: "100%",
+    maxHeight: 900,
+    backgroundColor: colors.background,
+    borderRadius: 24,
+    overflow: "hidden",
+    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.4)",
+  },
+});
