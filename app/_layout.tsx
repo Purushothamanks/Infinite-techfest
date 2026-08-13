@@ -4,6 +4,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { Platform, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -12,21 +13,8 @@ import { QueryProvider } from "@/providers/QueryProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { useAuthStore } from "@/store/authStore";
 
-/**
- * Keeps the native splash screen (configured via the `expo-splash-screen`
- * plugin in app.json) visible past its default auto-hide point. Must run
- * at module scope, before RootLayout's first render, so there's no gap
- * where the native splash could hide itself early.
- */
 SplashScreen.preventAutoHideAsync();
 
-/**
- * Loads the Poppins font family required by AGENTS.md Section 4 (Design
- * System: "Poppins typography"). Rendering is held back until fonts are
- * ready so no screen ever briefly flashes the system default font. Once
- * fonts are ready, the native splash is hidden, handing off directly to
- * the custom SplashScreen component rendered by app/index.tsx.
- */
 export default function RootLayout() {
   const [fontsLoaded, fontsError] = useFonts({
     "Poppins-Regular": require("@/assets/fonts/Poppins-Regular.ttf"),
@@ -51,7 +39,9 @@ export default function RootLayout() {
         <QueryProvider>
           <ThemeProvider>
             <AuthProvider>
-              <RootNavigator />
+              <MobileViewportWrapper>
+                <RootNavigator />
+              </MobileViewportWrapper>
             </AuthProvider>
           </ThemeProvider>
         </QueryProvider>
@@ -61,17 +51,24 @@ export default function RootLayout() {
 }
 
 /**
- * Route guards, split from RootLayout so useAuthStore only re-renders the
- * navigator (not the font-loading/provider tree) on auth state changes.
- *
- * - "authenticated" -> (student) routes only.
- * - "unauthenticated" / "loading" / "password_recovery" -> (authentication)
- *   routes only. "password_recovery" belongs here because Reset Password
- *   lives under (authentication), even though a session technically exists
- *   at that point (see store/authStore.ts).
- * - The root index route (Splash) has no guard — it's the initial route
- *   and redirects itself once the real status resolves.
+ * Mobile Viewport Wrapper:
+ * Enforces a mobile device aspect ratio and frame on desktop web browsers,
+ * while expanding 100% full screen on actual mobile devices and narrow viewports.
  */
+function MobileViewportWrapper({ children }: { children: React.ReactNode }) {
+  if (Platform.OS !== "web") {
+    return <View className="flex-1 bg-background">{children}</View>;
+  }
+
+  return (
+    <View className="flex-1 w-full h-full bg-slate-900 items-center justify-center">
+      <View className="w-full max-w-[430px] h-full sm:h-[92vh] sm:max-h-[920px] bg-background sm:rounded-[36px] sm:shadow-2xl overflow-hidden sm:border-4 sm:border-slate-800 flex-1">
+        {children}
+      </View>
+    </View>
+  );
+}
+
 function RootNavigator() {
   const status = useAuthStore((state) => state.status);
   const isAuthenticated = true; // TEMP-QA-BYPASS: status === "authenticated";
