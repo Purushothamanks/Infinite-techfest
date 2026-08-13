@@ -1,9 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-900">
+<html lang="en" class="h-full bg-[#0A1128]">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>INFINITE TECHFEST 2026 — Compact Mobile View</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>INFINITE TECHFEST 2026 — R.P. Sarathy Institute of Technology</title>
+  
+  <!-- PWA Web App Manifest & Theme Meta -->
+  <meta name="theme-color" content="#0A1128">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -11,7 +16,7 @@
   <!-- Google Fonts: Inter & Poppins -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
   
   <script>
     tailwind.config = {
@@ -22,19 +27,22 @@
             poppins: ['Poppins', 'sans-serif'],
           },
           colors: {
-            darkNavy: '#062B72',
-            primaryBlue: '#123B96',
+            deepNavy: '#0A1128',
+            darkBlueBg: '#0D1B2A',
+            royalBlue: '#1D4ED8',
             brightBlue: '#1677E8',
-            lightBlue: '#EAF3FF',
-            textDark: '#0B2864',
-            secondaryText: '#687085',
-            customBorder: '#E7E9EE',
-            customGreen: '#20A957',
-            lightGreen: '#E7F7ED',
-            customYellow: '#F5B51B',
-            lightYellow: '#FFF5D8',
-            customRed: '#E53935',
-            lightRed: '#FFECEC',
+            goldAccent: '#F59E0B',
+            richGold: '#D4AF37',
+            lightBlueBg: '#EEF5FF',
+            cardBorder: '#E2E8F0',
+            textDark: '#0F172A',
+            textMuted: '#64748B',
+            successGreen: '#10B981',
+            lightGreen: '#E6F4EA',
+            warningAmber: '#F59E0B',
+            lightAmber: '#FEF3C7',
+            dangerRed: '#EF4444',
+            lightRed: '#FEE2E2',
           }
         }
       }
@@ -44,521 +52,1126 @@
   <style>
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    .screen-view { display: none; }
+    .screen-view.active-screen { display: block; }
+    
+    .glass-navy {
+      background: rgba(13, 27, 42, 0.85);
+      backdrop-filter: blur(12px);
+    }
   </style>
 </head>
-<body class="h-full font-sans antialiased text-textDark bg-slate-900 flex justify-center items-center p-0 sm:p-4">
+<body class="h-full font-sans antialiased text-textDark bg-[#050B18] flex justify-center items-center p-0 sm:p-4">
 
-  <!-- Mobile Viewport Canvas Container (Compact 390px Width, Standard Mobile Proportions) -->
-  <div class="w-full max-w-[390px] h-full sm:h-[844px] bg-white sm:rounded-[36px] shadow-2xl overflow-hidden flex flex-col relative border-0 sm:border-[4px] sm:border-slate-800">
+  <!-- Mobile Viewport Outer App Container (430px x 932px, Centered on Desktop, Full Width on Mobile) -->
+  <div class="w-full max-w-[430px] h-full sm:h-[932px] bg-[#0A1128] sm:rounded-[44px] shadow-2xl overflow-hidden flex flex-col relative border-0 sm:border-[6px] sm:border-slate-800/80">
     
-    <!-- HEADER -->
-    <header class="bg-white px-4 pt-4 pb-2.5 flex items-center justify-between border-b border-customBorder/60 sticky top-0 z-30">
-      <!-- Left: Back Arrow + Events Title Stack -->
-      <div class="flex items-center gap-3">
-        <button onclick="window.history.back()" class="text-darkNavy hover:opacity-80 transition-opacity p-0.5">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+    <!-- APP GLOBAL HEADER -->
+    <header id="global-header" class="bg-[#0A1128]/95 backdrop-blur-md px-5 py-3.5 flex items-center justify-between border-b border-slate-800/80 sticky top-0 z-40 text-white">
+      <!-- Left Branding / Back Button dynamic -->
+      <div id="header-brand" class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-royalBlue flex items-center justify-center text-goldAccent font-bold shadow-md shadow-royalBlue/30">
+          <svg class="w-5 h-5 text-goldAccent" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
           </svg>
-        </button>
-        
+        </div>
         <div>
-          <h1 class="font-poppins font-bold text-xl text-darkNavy leading-tight tracking-tight">
-            Events
-          </h1>
-          <p class="text-xs font-medium text-secondaryText leading-tight mt-0.5">
-            Explore and register for amazing events
-          </p>
+          <span class="font-poppins font-extrabold text-xs tracking-wider text-white uppercase block leading-none">
+            INFINITE
+          </span>
+          <span class="font-poppins font-bold text-[10px] tracking-wide text-goldAccent uppercase block leading-tight mt-0.5">
+            TECHFEST 2026
+          </span>
         </div>
       </div>
 
-      <!-- Right: Notification Bell (with badge 3) -->
-      <button onclick="toggleNotifications()" class="relative text-darkNavy hover:opacity-80 transition-opacity p-1">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-        </svg>
-        <span class="absolute -top-1 -right-1 w-4 h-4 bg-customRed text-white font-bold text-[9px] rounded-full flex items-center justify-center border-2 border-white shadow-sm">
-          3
+      <!-- Left Back Button (Shown on Sub-screens) -->
+      <div id="header-back" class="hidden items-center gap-3">
+        <button onclick="goBack()" class="w-8 h-8 rounded-full bg-slate-800/80 flex items-center justify-center text-white hover:bg-slate-700 transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+        <span id="header-page-title" class="font-poppins font-bold text-base text-white leading-none">
+          Page Title
         </span>
-      </button>
+      </div>
+
+      <!-- Right Header Actions (Bell Notification & Avatar Profile) -->
+      <div class="flex items-center gap-3">
+        <button onclick="openScreen('screen-notifications')" class="relative w-9 h-9 rounded-full bg-slate-800/80 border border-slate-700/80 flex items-center justify-center text-white hover:bg-slate-700 transition-colors">
+          <svg class="w-4 h-4 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+          <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white font-bold text-[9px] rounded-full flex items-center justify-center border-2 border-[#0A1128]">
+            3
+          </span>
+        </button>
+
+        <button onclick="openScreen('screen-profile')" class="w-9 h-9 rounded-full ring-2 ring-goldAccent/40 overflow-hidden bg-gradient-to-tr from-royalBlue to-goldAccent flex items-center justify-center text-white font-bold text-xs shadow-sm">
+          PS
+        </button>
+      </div>
     </header>
 
-    <!-- MAIN SCROLLABLE CONTENT AREA -->
-    <main class="flex-1 overflow-y-auto no-scrollbar pb-[70px] bg-white space-y-3.5">
-      
-      <!-- SEARCH BAR -->
-      <section class="px-4 pt-3">
-        <div class="relative w-full h-11 bg-[#F8FAFC] border border-[#E5E7EC] rounded-xl flex items-center px-3 shadow-sm">
-          <svg class="w-4 h-4 text-secondaryText mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-          </svg>
+    <!-- MAIN SCROLLABLE APP BODY -->
+    <main class="flex-1 overflow-y-auto no-scrollbar pb-24 bg-slate-100">
+
+      <!-- ========================================== -->
+      <!-- SCREEN 1: HOME DASHBOARD -->
+      <!-- ========================================== -->
+      <div id="screen-home" class="screen-view active-screen bg-slate-100 space-y-4">
+        
+        <!-- Greeting Header -->
+        <section class="bg-[#0A1128] px-5 pt-3 pb-6 text-white rounded-b-3xl shadow-lg border-b border-slate-800">
+          <p class="text-xs text-slate-400 font-medium">Good Morning 👋</p>
+          <h1 class="font-poppins font-bold text-xl text-white tracking-tight mt-0.5">
+            Welcome back, Student
+          </h1>
+          <p class="text-[11px] text-goldAccent font-semibold mt-1">
+            R.P. Sarathy Institute of Technology • CSE Department
+          </p>
+
+          <!-- Status Banner Card -->
+          <div class="mt-4 bg-gradient-to-br from-royalBlue/90 to-blue-900/90 rounded-2xl p-4 border border-blue-400/30 shadow-xl relative overflow-hidden backdrop-blur-md">
+            <div class="flex items-start justify-between">
+              <div class="pr-2 max-w-[75%]">
+                <h2 class="font-poppins font-bold text-sm text-white">
+                  You're all set! 🎉
+                </h2>
+                <p class="text-[11px] text-blue-100 mt-0.5 leading-snug">
+                  Your symposium journey is ready to begin.
+                </p>
+              </div>
+
+              <!-- Celebration Icon -->
+              <div class="w-10 h-10 rounded-xl bg-goldAccent text-white flex items-center justify-center text-xl shadow-md border border-white/20 flex-shrink-0">
+                🥳
+              </div>
+            </div>
+
+            <!-- Checklist status columns -->
+            <div class="mt-3 pt-3 border-t border-white/15 flex items-center justify-between text-white">
+              <div class="flex items-center gap-1.5">
+                <span class="w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] font-bold">✓</span>
+                <span class="text-[10px] font-medium">Reg Active</span>
+              </div>
+              <div class="w-px h-5 bg-white/20"></div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] font-bold">✓</span>
+                <span class="text-[10px] font-medium">Pay Verified</span>
+              </div>
+              <div class="w-px h-5 bg-white/20"></div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] font-bold">✓</span>
+                <span class="text-[10px] font-medium">QR Pass Ready</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- "My Events" Horizontal Carousel -->
+        <section class="px-4">
+          <div class="flex items-center justify-between mb-2">
+            <h2 class="font-poppins font-bold text-sm text-textDark">My Events</h2>
+            <button onclick="openScreen('screen-events')" class="text-xs font-bold text-royalBlue hover:underline">
+              View All &gt;
+            </button>
+          </div>
+
+          <div class="flex gap-3 overflow-x-auto no-scrollbar py-1">
+            <!-- Event Card 1: CodeCraft -->
+            <div onclick="openRegistrationWizard('CodeCraft')" class="w-[210px] flex-shrink-0 bg-white rounded-2xl p-3.5 border border-cardBorder shadow-sm flex flex-col justify-between cursor-pointer hover:border-royalBlue transition-all">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="w-7 h-7 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center text-royalBlue font-mono font-bold text-xs">
+                    &lt;/&gt;
+                  </span>
+                  <span class="bg-emerald-50 text-emerald-600 border border-emerald-200 px-2 py-0.5 rounded-full text-[9px] font-bold">
+                    Registered
+                  </span>
+                </div>
+                <span class="text-[10px] font-bold text-textMuted uppercase tracking-wider block">Coding</span>
+                <h3 class="font-poppins font-bold text-sm text-textDark mt-0.5">CodeCraft</h3>
+              </div>
+              <div class="mt-3 pt-2 border-t border-slate-100 text-[10px] text-textMuted space-y-0.5">
+                <p class="font-semibold text-textDark">23 AUG 2026 • 09:00 AM</p>
+                <p>📍 Lab 404, Main Block</p>
+              </div>
+            </div>
+
+            <!-- Event Card 2: AI Innovators -->
+            <div onclick="openRegistrationWizard('AI Innovators')" class="w-[210px] flex-shrink-0 bg-white rounded-2xl p-3.5 border border-cardBorder shadow-sm flex flex-col justify-between cursor-pointer hover:border-royalBlue transition-all">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">
+                    🧠
+                  </span>
+                  <span class="bg-emerald-50 text-emerald-600 border border-emerald-200 px-2 py-0.5 rounded-full text-[9px] font-bold">
+                    Registered
+                  </span>
+                </div>
+                <span class="text-[10px] font-bold text-textMuted uppercase tracking-wider block">AI / ML</span>
+                <h3 class="font-poppins font-bold text-sm text-textDark mt-0.5">AI Innovators</h3>
+              </div>
+              <div class="mt-3 pt-2 border-t border-slate-100 text-[10px] text-textMuted space-y-0.5">
+                <p class="font-semibold text-textDark">24 AUG 2026 • 10:30 AM</p>
+                <p>📍 Seminar Hall</p>
+              </div>
+            </div>
+
+            <!-- Event Card 3: Tech Quiz -->
+            <div onclick="openRegistrationWizard('Tech Quiz')" class="w-[210px] flex-shrink-0 bg-white rounded-2xl p-3.5 border border-cardBorder shadow-sm flex flex-col justify-between cursor-pointer hover:border-goldAccent transition-all">
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <span class="w-7 h-7 rounded-lg bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 font-bold text-xs">
+                    ❓
+                  </span>
+                  <span class="bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded-full text-[9px] font-bold">
+                    Pending Payment
+                  </span>
+                </div>
+                <span class="text-[10px] font-bold text-textMuted uppercase tracking-wider block">Quiz</span>
+                <h3 class="font-poppins font-bold text-sm text-textDark mt-0.5">Tech Quiz</h3>
+              </div>
+              <div class="mt-3 pt-2 border-t border-slate-100 text-[10px] text-textMuted space-y-0.5">
+                <p class="font-semibold text-textDark">24 AUG 2026 • 02:00 PM</p>
+                <p>📍 Auditorium</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- "Next Up" & Quick QR Pass Preview Row -->
+        <section class="px-4 grid grid-cols-2 gap-3">
+          <!-- Left: Next Up Card -->
+          <div class="bg-[#0A1128] text-white rounded-2xl p-3.5 flex flex-col justify-between shadow-md relative overflow-hidden">
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-[9px] font-bold uppercase tracking-wider text-goldAccent">NEXT UP</span>
+                <svg class="w-3.5 h-3.5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              </div>
+              <h3 class="font-poppins font-bold text-xs text-white leading-tight">CodeCraft</h3>
+              <p class="text-[10px] text-slate-300 mt-0.5">23 AUG • 09:00 AM</p>
+            </div>
+
+            <!-- Countdown Ring Widget -->
+            <div class="my-2 flex items-center justify-center">
+              <div class="w-12 h-12 rounded-full border-3 border-goldAccent flex flex-col items-center justify-center bg-[#0D1B2A] shadow-inner">
+                <span class="font-poppins font-extrabold text-xs text-white leading-none">01</span>
+                <span class="text-[7px] font-bold text-goldAccent uppercase tracking-tighter mt-0.5">DAY</span>
+              </div>
+            </div>
+
+            <button onclick="openRegistrationWizard('CodeCraft')" class="w-full bg-white text-[#0A1128] font-bold text-[10px] py-1.5 rounded-xl shadow-sm hover:bg-slate-100 transition-colors">
+              View Event
+            </button>
+          </div>
+
+          <!-- Right: Quick QR Pass Card -->
+          <div class="bg-white text-textDark rounded-2xl p-3.5 border border-cardBorder flex flex-col justify-between shadow-sm">
+            <div>
+              <h3 class="font-poppins font-bold text-xs text-textDark">Your QR Pass</h3>
+              <p class="text-[9px] text-textMuted mt-0.5">Ready for event entry</p>
+            </div>
+
+            <div class="my-1.5 flex items-center justify-center bg-slate-50 p-1.5 rounded-xl border border-slate-100">
+              <svg class="w-12 h-12 text-[#0A1128]" viewBox="0 0 100 100" fill="currentColor">
+                <rect x="5" y="5" width="30" height="30" rx="2" fill="none" stroke="currentColor" stroke-width="6"/>
+                <rect x="13" y="13" width="14" height="14" rx="1"/>
+                <rect x="65" y="5" width="30" height="30" rx="2" fill="none" stroke="currentColor" stroke-width="6"/>
+                <rect x="73" y="13" width="14" height="14" rx="1"/>
+                <rect x="5" y="65" width="30" height="30" rx="2" fill="none" stroke="currentColor" stroke-width="6"/>
+                <rect x="13" y="73" width="14" height="14" rx="1"/>
+                <rect x="42" y="10" width="10" height="10"/>
+                <rect x="54" y="25" width="8" height="8"/>
+              </svg>
+            </div>
+
+            <button onclick="openScreen('screen-qrpass')" class="w-full bg-royalBlue text-white font-bold text-[10px] py-1.5 rounded-xl shadow-sm hover:bg-blue-800 transition-colors">
+              View QR Pass
+            </button>
+          </div>
+        </section>
+
+        <!-- Payment Status & Certificates Widget Row -->
+        <section class="px-4 grid grid-cols-2 gap-3">
+          <div class="bg-white rounded-2xl p-3.5 border border-cardBorder shadow-sm flex flex-col justify-between">
+            <div>
+              <span class="text-[9px] font-bold text-textMuted uppercase block mb-0.5">Payment Status</span>
+              <div class="flex items-center gap-1 text-emerald-600">
+                <span class="font-bold text-xs">✓ Verified</span>
+              </div>
+              <p class="text-[9px] text-textMuted mt-1">Registration fee of ₹350 verified.</p>
+            </div>
+            <button onclick="alert('Payment ID: PAY-2026-9F4H\nStatus: Verified\nAmount: ₹350')" class="text-[10px] font-bold text-royalBlue text-left mt-2 hover:underline">
+              View Details &gt;
+            </button>
+          </div>
+
+          <div onclick="openScreen('screen-my-certificates')" class="bg-white rounded-2xl p-3.5 border border-cardBorder shadow-sm flex flex-col justify-between cursor-pointer hover:border-royalBlue">
+            <div>
+              <div class="flex items-center justify-between mb-0.5">
+                <span class="text-[9px] font-bold text-textMuted uppercase">Certificates</span>
+                <span class="text-xs">📜</span>
+              </div>
+              <p class="text-xs font-bold text-textDark">2 Certificates</p>
+              <p class="text-[9px] text-textMuted mt-0.5">CodeCraft & AI Innovators</p>
+            </div>
+            <span class="text-[10px] font-bold text-royalBlue text-left mt-2">View All &gt;</span>
+          </div>
+        </section>
+
+        <!-- Today's Schedule Timeline -->
+        <section class="px-4 pb-4">
+          <div class="flex items-center justify-between mb-2">
+            <h2 class="font-poppins font-bold text-sm text-textDark">Today's Schedule</h2>
+            <button onclick="openScreen('screen-schedule')" class="text-xs font-bold text-royalBlue hover:underline">
+              View All &gt;
+            </button>
+          </div>
+
+          <div class="bg-white rounded-2xl p-3.5 border border-cardBorder shadow-sm space-y-3">
+            <div class="flex items-start gap-2.5">
+              <div class="w-2.5 h-2.5 rounded-full bg-royalBlue mt-1"></div>
+              <div class="flex-1 pb-2 border-b border-slate-100">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-xs text-textDark">Registration & Check-in</span>
+                  <span class="text-[9px] font-bold text-royalBlue bg-blue-50 px-2 py-0.5 rounded-full">09:00 AM</span>
+                </div>
+                <span class="text-[10px] text-textMuted">📍 Main Block Entrance</span>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-2.5">
+              <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 mt-1"></div>
+              <div class="flex-1 pb-2 border-b border-slate-100">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-xs text-textDark">CodeCraft</span>
+                  <span class="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">10:30 AM</span>
+                </div>
+                <span class="text-[10px] text-textMuted">📍 Lab 404, Main Block</span>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-2.5">
+              <div class="w-2.5 h-2.5 rounded-full bg-amber-500 mt-1"></div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <span class="font-bold text-xs text-textDark">AI Innovators</span>
+                  <span class="text-[9px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full">02:00 PM</span>
+                </div>
+                <span class="text-[10px] text-textMuted">📍 Seminar Hall</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+
+      <!-- ========================================== -->
+      <!-- SCREEN 2: EVENTS DISCOVERY -->
+      <!-- ========================================== -->
+      <div id="screen-events" class="screen-view bg-slate-100 p-4 space-y-3">
+        <h2 class="font-poppins font-bold text-xl text-[#0A1128]">Discover Events</h2>
+        
+        <!-- Search Input -->
+        <div class="relative">
           <input 
             type="text" 
-            id="search-input"
-            oninput="handleSearch(this.value)"
+            id="events-search-bar" 
+            oninput="filterEventsList(this.value)" 
             placeholder="Search events..." 
-            class="w-full bg-transparent text-xs text-textDark placeholder-secondaryText focus:outline-none font-medium"
+            class="w-full bg-white border border-cardBorder rounded-xl py-2.5 pl-9 pr-4 text-xs font-medium text-textDark focus:outline-none focus:border-royalBlue"
           />
-          <button id="clear-btn" onclick="clearSearch()" class="hidden text-secondaryText hover:text-darkNavy ml-1">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          <svg class="w-4 h-4 text-textMuted absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+
+        <!-- Filter Chips -->
+        <div class="flex gap-2 overflow-x-auto no-scrollbar py-1">
+          <button onclick="filterCategory('All', this)" class="event-filter-chip bg-[#0A1128] text-white px-3 py-1 rounded-full text-xs font-semibold">All</button>
+          <button onclick="filterCategory('Technical', this)" class="event-filter-chip bg-white border text-textDark px-3 py-1 rounded-full text-xs font-semibold">Technical</button>
+          <button onclick="filterCategory('Non-Technical', this)" class="event-filter-chip bg-white border text-textDark px-3 py-1 rounded-full text-xs font-semibold">Non-Technical</button>
+          <button onclick="filterCategory('Workshop', this)" class="event-filter-chip bg-white border text-textDark px-3 py-1 rounded-full text-xs font-semibold">Workshop</button>
+          <button onclick="filterCategory('Hackathon', this)" class="event-filter-chip bg-white border text-textDark px-3 py-1 rounded-full text-xs font-semibold">Hackathon</button>
+          <button onclick="filterCategory('Cultural', this)" class="event-filter-chip bg-white border text-textDark px-3 py-1 rounded-full text-xs font-semibold">Cultural</button>
+        </div>
+
+        <!-- Event Cards Container -->
+        <div class="space-y-3" id="discover-events-container">
+          
+          <!-- Event Item 1 -->
+          <div class="discover-card bg-white rounded-2xl p-4 border border-cardBorder shadow-sm space-y-2" data-cat="Technical" data-[#title]="codecraft">
+            <div class="flex items-start justify-between">
+              <div>
+                <span class="bg-blue-50 text-royalBlue text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Technical</span>
+                <h3 class="font-poppins font-bold text-base text-[#0A1128] mt-1">CodeCraft</h3>
+              </div>
+              <span class="bg-emerald-50 text-emerald-600 font-bold text-xs px-2.5 py-1 rounded-full">Registered</span>
+            </div>
+            <p class="text-xs text-textMuted">Showcase your coding skills and solve real-world algorithms under timed challenges.</p>
+            <div class="text-[11px] font-medium text-textDark space-y-0.5 pt-1 border-t border-slate-100">
+              <p>📅 23 AUG 2026 • 🕐 09:00 AM</p>
+              <p>📍 Lab 404, Main Block</p>
+            </div>
+            <div class="pt-2 flex gap-2">
+              <button onclick="openRegistrationWizard('CodeCraft')" class="flex-1 bg-royalBlue text-white font-bold text-xs py-2 rounded-xl">Register Now</button>
+              <button onclick="openRegistrationWizard('CodeCraft')" class="border border-cardBorder text-textDark font-bold text-xs px-3 py-2 rounded-xl">View Details</button>
+            </div>
+          </div>
+
+          <!-- Event Item 2 -->
+          <div class="discover-card bg-white rounded-2xl p-4 border border-cardBorder shadow-sm space-y-2" data-cat="Technical" data-[#title]="ai innovators">
+            <div class="flex items-start justify-between">
+              <div>
+                <span class="bg-indigo-50 text-indigo-600 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Technical</span>
+                <h3 class="font-poppins font-bold text-base text-[#0A1128] mt-1">AI Innovators</h3>
+              </div>
+              <span class="bg-emerald-50 text-emerald-600 font-bold text-xs px-2.5 py-1 rounded-full">Registered</span>
+            </div>
+            <p class="text-xs text-textMuted">Build intelligent machine learning applications, neural network models, and generative solutions.</p>
+            <div class="text-[11px] font-medium text-textDark space-y-0.5 pt-1 border-t border-slate-100">
+              <p>📅 24 AUG 2026 • 🕐 10:30 AM</p>
+              <p>📍 Seminar Hall</p>
+            </div>
+            <div class="pt-2 flex gap-2">
+              <button onclick="openRegistrationWizard('AI Innovators')" class="flex-1 bg-royalBlue text-white font-bold text-xs py-2 rounded-xl">Register Now</button>
+              <button onclick="openRegistrationWizard('AI Innovators')" class="border border-cardBorder text-textDark font-bold text-xs px-3 py-2 rounded-xl">View Details</button>
+            </div>
+          </div>
+
+          <!-- Event Item 3 -->
+          <div class="discover-card bg-white rounded-2xl p-4 border border-cardBorder shadow-sm space-y-2" data-cat="Non-Technical" data-[#title]="tech quiz">
+            <div class="flex items-start justify-between">
+              <div>
+                <span class="bg-amber-50 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Non-Technical</span>
+                <h3 class="font-poppins font-bold text-base text-[#0A1128] mt-1">Tech Quiz</h3>
+              </div>
+              <span class="bg-amber-50 text-amber-700 font-bold text-xs px-2.5 py-1 rounded-full">Pending Payment</span>
+            </div>
+            <p class="text-xs text-textMuted">Test your general technology awareness, science history, and IT trivia in 3 dynamic rounds.</p>
+            <div class="text-[11px] font-medium text-textDark space-y-0.5 pt-1 border-t border-slate-100">
+              <p>📅 24 AUG 2026 • 🕐 02:00 PM</p>
+              <p>📍 Auditorium</p>
+            </div>
+            <div class="pt-2 flex gap-2">
+              <button onclick="openRegistrationWizard('Tech Quiz')" class="flex-1 bg-royalBlue text-white font-bold text-xs py-2 rounded-xl">Register Now</button>
+              <button onclick="openRegistrationWizard('Tech Quiz')" class="border border-cardBorder text-textDark font-bold text-xs px-3 py-2 rounded-xl">View Details</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- ========================================== -->
+      <!-- SCREEN 3: OFFICIAL QR PASS SCREEN -->
+      <!-- ========================================== -->
+      <div id="screen-qrpass" class="screen-view bg-slate-100 p-4 space-y-4">
+        <!-- Status Banner -->
+        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3.5 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-xs">✓</span>
+            <div>
+              <p class="font-bold text-xs text-emerald-800">Pass Active</p>
+              <p class="text-[10px] text-emerald-600">Verified student entry badge</p>
+            </div>
+          </div>
+          <span class="bg-emerald-500 text-white font-bold text-[10px] px-2.5 py-1 rounded-full">ACTIVE</span>
+        </div>
+
+        <!-- Student Participant Card -->
+        <div class="bg-white rounded-2xl p-4 border border-cardBorder shadow-sm text-center">
+          <div class="w-16 h-16 rounded-full ring-4 ring-royalBlue/20 bg-gradient-to-tr from-royalBlue to-goldAccent mx-auto flex items-center justify-center text-white font-bold text-xl">
+            PS
+          </div>
+          <h3 class="font-poppins font-bold text-base text-[#0A1128] mt-2">Purushothaman S</h3>
+          <p class="text-xs text-textMuted">Department: Computer Science & Engineering (CSE)</p>
+          <p class="text-xs font-semibold text-royalBlue mt-0.5">R.P. Sarathy Institute of Technology • III Year</p>
+        </div>
+
+        <!-- Key Info Cards Grid -->
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div onclick="copyText('ITF26-7A3B9C')" class="bg-white p-3 rounded-xl border border-cardBorder flex items-center justify-between cursor-pointer hover:border-royalBlue">
+            <div>
+              <span class="text-[9px] font-bold text-textMuted uppercase block">PASS ID</span>
+              <span class="font-mono font-bold text-textDark">ITF26-7A3B9C</span>
+            </div>
+            <span class="text-textMuted text-xs">📋</span>
+          </div>
+
+          <div onclick="copyText('REG-26-9F4H8K')" class="bg-white p-3 rounded-xl border border-cardBorder flex items-center justify-between cursor-pointer hover:border-royalBlue">
+            <div>
+              <span class="text-[9px] font-bold text-textMuted uppercase block">REGISTRATION ID</span>
+              <span class="font-mono font-bold text-textDark">REG-26-9F4H8K</span>
+            </div>
+            <span class="text-textMuted text-xs">📋</span>
+          </div>
+
+          <div class="bg-white p-3 rounded-xl border border-cardBorder">
+            <span class="text-[9px] font-bold text-textMuted uppercase block">ISSUED ON</span>
+            <span class="font-bold text-textDark">24 Aug 2026</span>
+          </div>
+
+          <div class="bg-white p-3 rounded-xl border border-cardBorder">
+            <span class="text-[9px] font-bold text-textMuted uppercase block">VALID UNTIL</span>
+            <span class="font-bold text-textDark">26 Aug 2026</span>
+          </div>
+        </div>
+
+        <!-- High-Res QR Verification Frame -->
+        <div class="bg-white p-5 rounded-2xl border border-cardBorder text-center space-y-3 shadow-md">
+          <p class="text-xs font-bold text-[#0A1128]">Scan for Event Entry</p>
+          <div class="inline-block p-4 border-4 border-royalBlue/30 rounded-2xl bg-slate-50">
+            <svg class="w-44 h-44 text-[#0A1128]" viewBox="0 0 100 100" fill="currentColor">
+              <rect x="5" y="5" width="30" height="30" rx="3" fill="none" stroke="currentColor" stroke-width="6"/>
+              <rect x="13" y="13" width="14" height="14" rx="1"/>
+              <rect x="65" y="5" width="30" height="30" rx="3" fill="none" stroke="currentColor" stroke-width="6"/>
+              <rect x="73" y="13" width="14" height="14" rx="1"/>
+              <rect x="5" y="65" width="30" height="30" rx="3" fill="none" stroke="currentColor" stroke-width="6"/>
+              <rect x="13" y="73" width="14" height="14" rx="1"/>
+              <rect x="42" y="10" width="10" height="10"/>
+              <rect x="54" y="25" width="8" height="8"/>
+              <rect x="40" y="40" width="12" height="12"/>
+              <rect x="65" y="45" width="10" height="10"/>
+              <rect x="80" y="65" width="12" height="12"/>
             </svg>
+          </div>
+          <p class="text-[11px] text-textMuted">Present this QR code at venue entrance gates for fast scan check-in.</p>
+        </div>
+
+        <!-- Registered Events List -->
+        <div class="bg-white rounded-2xl p-4 border border-cardBorder space-y-2">
+          <div class="flex items-center justify-between border-b pb-2">
+            <h4 class="font-bold text-xs text-[#0A1128]">Registered Events</h4>
+            <span class="text-xs font-bold text-royalBlue">3 Events Registered</span>
+          </div>
+
+          <div class="space-y-2 text-xs">
+            <div class="flex items-center justify-between py-1 border-b">
+              <div>
+                <p class="font-bold text-textDark">CodeCraft</p>
+                <p class="text-[10px] text-textMuted">23 Aug • 09:00 AM • Lab 404</p>
+              </div>
+              <span class="bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded-full">Registered</span>
+            </div>
+
+            <div class="flex items-center justify-between py-1 border-b">
+              <div>
+                <p class="font-bold text-textDark">AI Innovators</p>
+                <p class="text-[10px] text-textMuted">24 Aug • 10:30 AM • Seminar Hall</p>
+              </div>
+              <span class="bg-emerald-50 text-emerald-600 text-[10px] font-bold px-2 py-0.5 rounded-full">Registered</span>
+            </div>
+
+            <div class="flex items-center justify-between py-1">
+              <div>
+                <p class="font-bold text-textDark">Tech Quiz</p>
+                <p class="text-[10px] text-textMuted">24 Aug • 02:00 PM • Auditorium</p>
+              </div>
+              <span class="bg-amber-50 text-amber-700 text-[10px] font-bold px-2 py-0.5 rounded-full">Pending Payment</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security Notice -->
+        <div class="bg-blue-50 border border-blue-200 text-blue-800 p-3 rounded-xl text-[11px] leading-relaxed">
+          <strong>🔒 Security Notice:</strong> Keep your QR pass private. Do not share screenshots of your pass with other participants.
+        </div>
+      </div>
+
+
+      <!-- ========================================== -->
+      <!-- SCREEN 4: SYMPOSIUM SCHEDULE & MY SCHEDULE -->
+      <!-- ========================================== -->
+      <div id="screen-schedule" class="screen-view bg-slate-100 p-4 space-y-3">
+        <h2 class="font-poppins font-bold text-xl text-[#0A1128]">Symposium Schedule</h2>
+
+        <!-- Horizontal Date Selector -->
+        <div class="flex gap-2 overflow-x-auto no-scrollbar py-1">
+          <button class="bg-white border text-textDark px-3.5 py-1.5 rounded-xl text-xs font-bold flex-shrink-0">Sun 23</button>
+          <button class="bg-[#0A1128] text-white px-3.5 py-1.5 rounded-xl text-xs font-bold flex-shrink-0 relative">
+            Mon 24 <span class="bg-goldAccent text-[#0A1128] text-[8px] font-extrabold px-1 rounded ml-1">TODAY</span>
+          </button>
+          <button class="bg-white border text-textDark px-3.5 py-1.5 rounded-xl text-xs font-bold flex-shrink-0">Tue 25</button>
+          <button class="bg-white border text-textDark px-3.5 py-1.5 rounded-xl text-xs font-bold flex-shrink-0">Wed 26</button>
+        </div>
+
+        <!-- Event Type Filters & Toggle -->
+        <div class="flex items-center justify-between pt-1">
+          <span class="text-xs font-bold text-textDark">8 events scheduled</span>
+          <button onclick="toggleMyScheduleOnly(this)" class="text-xs font-bold text-royalBlue border border-royalBlue/30 px-3 py-1 rounded-full bg-blue-50">
+            Show My Events Only
           </button>
         </div>
-      </section>
 
-      <!-- CATEGORY FILTER BAR -->
-      <section class="pl-4">
-        <div class="flex gap-2 overflow-x-auto no-scrollbar pr-4 py-0.5">
-          <button onclick="filterCategory('All', this)" class="cat-chip bg-darkNavy text-white px-3.5 py-1.5 rounded-full font-semibold text-xs flex-shrink-0 shadow-sm transition-all">
-            All
+        <!-- Schedule Warning / Notice -->
+        <div class="bg-amber-50 border border-amber-200 text-amber-800 p-3 rounded-xl text-xs flex items-center justify-between">
+          <span>⚠️ Schedule Conflict: Review your overlapping registered slots.</span>
+          <button onclick="alert('Slot 10:30 AM to 12:00 PM CodeCraft overlaps with Workshop prep.')" class="font-bold underline text-[11px]">View</button>
+        </div>
+
+        <!-- Vertical Timeline (09:00 AM to 08:30 PM) -->
+        <div class="bg-white rounded-2xl p-4 border border-cardBorder space-y-4">
+          
+          <div class="flex gap-3">
+            <span class="text-xs font-bold text-royalBlue w-16 text-right">09:00 AM</span>
+            <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 mt-1"></div>
+            <div class="flex-1 pb-2 border-b">
+              <div class="flex items-center justify-between">
+                <h4 class="font-bold text-xs text-textDark">Registration & Check-in</h4>
+                <span class="text-[9px] font-bold bg-slate-100 text-textMuted px-2 py-0.5 rounded-full">Completed</span>
+              </div>
+              <p class="text-[10px] text-textMuted mt-0.5">📍 Main Block Entrance</p>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <span class="text-xs font-bold text-royalBlue w-16 text-right">10:30 AM</span>
+            <div class="w-2.5 h-2.5 rounded-full bg-royalBlue mt-1"></div>
+            <div class="flex-1 pb-2 border-b">
+              <div class="flex items-center justify-between">
+                <h4 class="font-bold text-xs text-textDark">CodeCraft</h4>
+                <span class="text-[9px] font-bold bg-goldAccent text-[#0A1128] px-2 py-0.5 rounded-full">NEXT UP</span>
+              </div>
+              <p class="text-[10px] text-textMuted mt-0.5">📍 Lab 404, Main Block</p>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <span class="text-xs font-bold text-slate-400 w-16 text-right">12:30 PM</span>
+            <div class="w-2.5 h-2.5 rounded-full bg-slate-300 mt-1"></div>
+            <div class="flex-1 pb-2 border-b">
+              <h4 class="font-bold text-xs text-textDark">Lunch Break</h4>
+              <p class="text-[10px] text-textMuted mt-0.5">📍 Student Dining Hall</p>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <span class="text-xs font-bold text-royalBlue w-16 text-right">02:00 PM</span>
+            <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 mt-1"></div>
+            <div class="flex-1 pb-2 border-b">
+              <h4 class="font-bold text-xs text-textDark">AI Innovators</h4>
+              <p class="text-[10px] text-textMuted mt-0.5">📍 Seminar Hall</p>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <span class="text-xs font-bold text-amber-600 w-16 text-right">04:00 PM</span>
+            <div class="w-2.5 h-2.5 rounded-full bg-amber-500 mt-1"></div>
+            <div class="flex-1 pb-2 border-b">
+              <h4 class="font-bold text-xs text-textDark">Tech Quiz</h4>
+              <p class="text-[10px] text-textMuted mt-0.5">📍 Auditorium</p>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <span class="text-xs font-bold text-emerald-600 w-16 text-right">06:00 PM</span>
+            <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse mt-1"></div>
+            <div class="flex-1 pb-2 border-b">
+              <div class="flex items-center justify-between">
+                <h4 class="font-bold text-xs text-textDark">Fun Arena</h4>
+                <span class="text-[9px] font-bold bg-emerald-500 text-white px-2 py-0.5 rounded-full">LIVE</span>
+              </div>
+              <p class="text-[10px] text-textMuted mt-0.5">📍 Open Ground</p>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <span class="text-xs font-bold text-slate-400 w-16 text-right">07:30 PM</span>
+            <div class="w-2.5 h-2.5 rounded-full bg-slate-300 mt-1"></div>
+            <div class="flex-1 pb-2 border-b">
+              <h4 class="font-bold text-xs text-textDark">Valedictory Ceremony</h4>
+              <p class="text-[10px] text-textMuted mt-0.5">📍 Main Auditorium</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ========================================== -->
+      <!-- SCREEN 5: CERTIFICATES & MY CERTIFICATES -->
+      <!-- ========================================== -->
+      <div id="screen-my-certificates" class="screen-view bg-slate-100 p-4 space-y-4">
+        <!-- Hero Header -->
+        <div class="bg-[#0A1128] text-white p-5 rounded-2xl shadow-lg border border-slate-800 text-center space-y-2">
+          <div class="w-12 h-12 rounded-full bg-goldAccent text-white flex items-center justify-center mx-auto text-2xl">📜</div>
+          <h2 class="font-poppins font-bold text-lg text-white">Your Achievements</h2>
+          <span class="inline-block bg-goldAccent/20 text-goldAccent font-bold text-xs px-3 py-1 rounded-full border border-goldAccent/30">
+            2 Verified Certificates Issued
+          </span>
+        </div>
+
+        <!-- Certificate Card 1: CodeCraft -->
+        <div class="bg-white rounded-2xl p-4 border border-cardBorder shadow-sm space-y-3">
+          <div class="flex items-start justify-between border-b pb-2">
+            <div>
+              <span class="bg-emerald-50 text-emerald-600 font-bold text-[10px] px-2 py-0.5 rounded-full">VERIFIED CERTIFICATE</span>
+              <h3 class="font-poppins font-bold text-base text-textDark mt-1">Participation Certificate</h3>
+              <p class="text-xs text-textMuted">Event: CodeCraft (Coding)</p>
+            </div>
+            <span class="text-2xl">🏅</span>
+          </div>
+
+          <div class="text-xs text-textMuted space-y-1">
+            <p><strong>Issued To:</strong> Purushothaman S (ITF2026-001)</p>
+            <p><strong>Institution:</strong> R.P. Sarathy Institute of Technology</p>
+            <p><strong>Certificate ID:</strong> CERT-2026-CC-8821</p>
+          </div>
+
+          <div class="flex gap-2 pt-1">
+            <button onclick="openCertificateModal('CodeCraft', 'Participation Certificate', 'CERT-2026-CC-8821')" class="flex-1 bg-royalBlue text-white font-bold text-xs py-2 rounded-xl">View Certificate</button>
+            <button onclick="alert('Downloading PDF Certificate...')" class="border border-cardBorder text-textDark font-bold text-xs px-3 py-2 rounded-xl">PDF</button>
+          </div>
+        </div>
+
+        <!-- Certificate Card 2: AI Innovators -->
+        <div class="bg-white rounded-2xl p-4 border border-cardBorder shadow-sm space-y-3">
+          <div class="flex items-start justify-between border-b pb-2">
+            <div>
+              <span class="bg-emerald-50 text-emerald-600 font-bold text-[10px] px-2 py-0.5 rounded-full">VERIFIED CERTIFICATE</span>
+              <h3 class="font-poppins font-bold text-base text-textDark mt-1">Excellence Certificate</h3>
+              <p class="text-xs text-textMuted">Event: AI Innovators (AI / ML)</p>
+            </div>
+            <span class="text-2xl">🏆</span>
+          </div>
+
+          <div class="text-xs text-textMuted space-y-1">
+            <p><strong>Issued To:</strong> Purushothaman S (ITF2026-001)</p>
+            <p><strong>Institution:</strong> R.P. Sarathy Institute of Technology</p>
+            <p><strong>Certificate ID:</strong> CERT-2026-AI-9942</p>
+          </div>
+
+          <div class="flex gap-2 pt-1">
+            <button onclick="openCertificateModal('AI Innovators', 'Excellence Certificate', 'CERT-2026-AI-9942')" class="flex-1 bg-royalBlue text-white font-bold text-xs py-2 rounded-xl">View Certificate</button>
+            <button onclick="alert('Downloading PDF Certificate...')" class="border border-cardBorder text-textDark font-bold text-xs px-3 py-2 rounded-xl">PDF</button>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ========================================== -->
+      <!-- SCREEN 6: MY PROFILE & SETTINGS -->
+      <!-- ========================================== -->
+      <div id="screen-profile" class="screen-view bg-slate-100 p-4 space-y-4">
+        <!-- Profile Card -->
+        <div class="bg-white rounded-2xl p-4 border border-cardBorder shadow-sm text-center">
+          <div class="w-20 h-20 rounded-full ring-4 ring-royalBlue/20 bg-gradient-to-tr from-royalBlue to-goldAccent mx-auto flex items-center justify-center text-white font-bold text-2xl">
+            PS
+          </div>
+          <h3 class="font-poppins font-bold text-lg text-textDark mt-2">Purushothaman S</h3>
+          <p class="text-xs text-textMuted">ID: ITF2026-001 • Register No: 24CSE0891</p>
+          <span class="inline-block bg-blue-50 text-royalBlue font-bold text-[10px] px-3 py-1 rounded-full mt-1 border border-blue-200">
+            R.P. Sarathy Institute of Technology • CSE Dept
+          </span>
+
+          <!-- Completion Bar -->
+          <div class="mt-3 pt-3 border-t border-slate-100">
+            <div class="flex justify-between text-xs mb-1 font-semibold">
+              <span class="text-textMuted">Profile Completion</span>
+              <span class="text-royalBlue">80%</span>
+            </div>
+            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+              <div class="bg-royalBlue h-full rounded-full" style="width: 80%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Academic & Personal Details -->
+        <div class="bg-white rounded-2xl p-4 border border-cardBorder space-y-2 text-xs">
+          <h4 class="font-bold text-textDark border-b pb-1">Academic & Contact Information</h4>
+          <p><strong>Email:</strong> student@rpsit.ac.in (Verified)</p>
+          <p><strong>Phone:</strong> +91 98765 43210</p>
+          <p><strong>College:</strong> R.P. Sarathy Institute of Technology</p>
+          <p><strong>Department:</strong> Computer Science & Engineering</p>
+          <p><strong>Year:</strong> III Year (CSE)</p>
+        </div>
+
+        <!-- Quick Settings & Actions -->
+        <div class="bg-white rounded-2xl p-2 border border-cardBorder text-xs space-y-1">
+          <button onclick="openScreen('screen-settings')" class="w-full p-2.5 text-left flex items-center justify-between hover:bg-slate-50 rounded-xl font-semibold text-textDark">
+            <span>⚙️ Account Settings</span>
+            <span>&gt;</span>
           </button>
-          <button onclick="filterCategory('Technical', this)" class="cat-chip bg-white border border-customBorder text-darkNavy px-3 py-1.5 rounded-full font-semibold text-xs flex-shrink-0 hover:border-darkNavy transition-all">
-            Technical
+          <button onclick="openScreen('screen-my-certificates')" class="w-full p-2.5 text-left flex items-center justify-between hover:bg-slate-50 rounded-xl font-semibold text-textDark">
+            <span>📜 My Verified Certificates</span>
+            <span>&gt;</span>
           </button>
-          <button onclick="filterCategory('Non-Technical', this)" class="cat-chip bg-white border border-customBorder text-darkNavy px-3 py-1.5 rounded-full font-semibold text-xs flex-shrink-0 hover:border-darkNavy transition-all">
-            Non-Technical
+          <button onclick="openScreen('screen-qrpass')" class="w-full p-2.5 text-left flex items-center justify-between hover:bg-slate-50 rounded-xl font-semibold text-textDark">
+            <span>🎟️ My Official QR Pass</span>
+            <span>&gt;</span>
           </button>
-          <button onclick="filterCategory('Workshop', this)" class="cat-chip bg-white border border-customBorder text-darkNavy px-3 py-1.5 rounded-full font-semibold text-xs flex-shrink-0 hover:border-darkNavy transition-all">
-            Workshop
-          </button>
-          <button onclick="filterCategory('Hackathon', this)" class="cat-chip bg-white border border-customBorder text-darkNavy px-3 py-1.5 rounded-full font-semibold text-xs flex-shrink-0 hover:border-darkNavy transition-all">
-            Hackathon
-          </button>
-          <button onclick="filterCategory('Cultural', this)" class="cat-chip bg-white border border-customBorder text-darkNavy px-3 py-1.5 rounded-full font-semibold text-xs flex-shrink-0 hover:border-darkNavy transition-all">
-            Cultural
+          <button onclick="alert('Signed out successfully.')" class="w-full p-2.5 text-left flex items-center justify-between hover:bg-red-50 text-red-600 font-bold rounded-xl">
+            <span>🚪 Sign Out</span>
+            <span>&gt;</span>
           </button>
         </div>
-      </section>
+      </div>
 
-      <!-- EVENTS LIST CONTAINER -->
-      <section class="px-4 space-y-3" id="events-list">
+
+      <!-- ========================================== -->
+      <!-- SCREEN 7: SETTINGS VIEW -->
+      <!-- ========================================== -->
+      <div id="screen-settings" class="screen-view bg-slate-100 p-4 space-y-4 text-xs">
+        <h2 class="font-poppins font-bold text-xl text-[#0A1128]">App Settings</h2>
         
-        <!-- EVENT CARD 1 — CODECRAFT -->
-        <article class="event-card bg-white border border-customBorder rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow" data-category="Technical" data-title="CodeCraft">
-          <div class="flex flex-row">
-            
-            <!-- Left Image -->
-            <div class="relative w-[115px] bg-slate-900 flex-shrink-0 overflow-hidden flex items-center justify-center">
-              <svg class="w-full h-full object-cover" viewBox="0 0 300 300" fill="none">
-                <rect width="300" height="300" fill="#06122E"/>
-                <circle cx="150" cy="150" r="100" stroke="#1677E8" stroke-width="4" stroke-dasharray="8 8" opacity="0.6"/>
-                <path d="M100 150 C 100 110, 140 110, 150 150 C 160 190, 200 190, 200 150 C 200 110, 160 110, 150 150 C 140 190, 100 190, 100 150 Z" stroke="#1677E8" stroke-width="10" fill="none"/>
-                <circle cx="150" cy="150" r="18" fill="#F5B51B"/>
-              </svg>
-
-              <!-- Star Featured Badge -->
-              <div class="absolute top-2 left-2 bg-customYellow text-white font-bold text-[9px] px-2 py-0.5 rounded-full flex items-center gap-0.5 shadow-sm">
-                <span>⭐</span>
-                <span>Featured</span>
-              </div>
+        <div class="bg-white rounded-2xl p-4 border border-cardBorder space-y-3">
+          <div class="flex items-center justify-between border-b pb-2">
+            <div>
+              <p class="font-bold text-textDark">Email Verification</p>
+              <p class="text-[10px] text-textMuted">student@rpsit.ac.in</p>
             </div>
-
-            <!-- Right Information Area -->
-            <div class="p-3 flex-1 flex flex-col justify-between space-y-1.5">
-              <div>
-                <span class="bg-lightBlue text-primaryBlue px-2 py-0.5 rounded-full text-[10px] font-semibold inline-block mb-1">
-                  Technical
-                </span>
-                <h2 class="font-poppins font-bold text-base text-darkNavy leading-tight">
-                  CodeCraft
-                </h2>
-                <p class="text-xs text-secondaryText leading-snug mt-0.5">
-                  Showcase coding skills & solve real-world problems.
-                </p>
-              </div>
-
-              <!-- Metadata List -->
-              <div class="space-y-0.5 text-[11px] text-secondaryText pt-1">
-                <div class="flex items-center gap-1.5">
-                  <svg class="w-3.5 h-3.5 text-darkNavy" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                  <span class="font-semibold text-textDark">23 AUG 2026</span>
-                </div>
-                <div class="flex items-center gap-1.5">
-                  <svg class="w-3.5 h-3.5 text-darkNavy" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                  <span>09:00 AM • Lab 404</span>
-                </div>
-              </div>
-            </div>
-
+            <span class="bg-emerald-50 text-emerald-600 font-bold px-2 py-0.5 rounded-full text-[10px]">Verified</span>
           </div>
 
-          <!-- Bottom Action Bar Strip -->
-          <div class="bg-slate-50/70 border-t border-customBorder px-3 py-2 flex items-center justify-between">
-            <div class="bg-lightGreen text-customGreen border border-customGreen/30 px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-1">
-              <span class="w-3 h-3 rounded-full bg-customGreen text-white flex items-center justify-center text-[8px]">✓</span>
-              <span>Registration Open</span>
+          <div class="flex items-center justify-between border-b pb-2">
+            <div>
+              <p class="font-bold text-textDark">Push Notifications</p>
+              <p class="text-[10px] text-textMuted">Receive event reminders & updates</p>
             </div>
-
-            <button onclick="openRegisterModal('CodeCraft', '23 AUG 2026', '09:00 AM', 'Lab 404')" class="bg-darkNavy hover:bg-primaryBlue text-white font-poppins font-bold text-xs px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors shadow-sm">
-              <span>Register Now</span>
-              <span>→</span>
-            </button>
-          </div>
-        </article>
-
-        <!-- EVENT CARD 2 — AI INNOVATORS -->
-        <article class="event-card bg-white border border-customBorder rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow" data-category="Technical" data-title="AI Innovators">
-          <div class="flex flex-row">
-            
-            <!-- Left Image -->
-            <div class="relative w-[115px] bg-slate-900 flex-shrink-0 overflow-hidden flex items-center justify-center">
-              <svg class="w-full h-full object-cover" viewBox="0 0 300 300" fill="none">
-                <rect width="300" height="300" fill="#081438"/>
-                <path d="M120 90 C120 70, 180 70, 180 90 C180 130, 200 140, 200 180 Z" stroke="#1677E8" stroke-width="6" fill="none"/>
-                <circle cx="150" cy="130" r="10" fill="#1677E8"/>
-              </svg>
-            </div>
-
-            <!-- Right Information Area -->
-            <div class="p-3 flex-1 flex flex-col justify-between space-y-1.5">
-              <div>
-                <span class="bg-lightBlue text-primaryBlue px-2 py-0.5 rounded-full text-[10px] font-semibold inline-block mb-1">
-                  Technical
-                </span>
-                <h2 class="font-poppins font-bold text-base text-darkNavy leading-tight">
-                  AI Innovators
-                </h2>
-                <p class="text-xs text-secondaryText leading-snug mt-0.5">
-                  Build intelligent AI models & present innovations.
-                </p>
-              </div>
-
-              <!-- Metadata List -->
-              <div class="space-y-0.5 text-[11px] text-secondaryText pt-1">
-                <div class="flex items-center gap-1.5">
-                  <svg class="w-3.5 h-3.5 text-darkNavy" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                  <span class="font-semibold text-textDark">24 AUG 2026</span>
-                </div>
-                <div class="flex items-center gap-1.5">
-                  <svg class="w-3.5 h-3.5 text-darkNavy" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                  <span>10:30 AM • Seminar Hall</span>
-                </div>
-              </div>
-            </div>
-
+            <input type="checkbox" checked class="w-4 h-4 text-royalBlue rounded">
           </div>
 
-          <!-- Bottom Action Bar Strip -->
-          <div class="bg-slate-50/70 border-t border-customBorder px-3 py-2 flex items-center justify-between">
-            <div class="bg-lightGreen text-customGreen border border-customGreen/30 px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-1">
-              <span class="w-3 h-3 rounded-full bg-customGreen text-white flex items-center justify-center text-[8px]">✓</span>
-              <span>Registered</span>
+          <div class="flex items-center justify-between border-b pb-2">
+            <div>
+              <p class="font-bold text-textDark">App Theme</p>
+              <p class="text-[10px] text-textMuted">System Default (Dark / Light)</p>
             </div>
-
-            <button onclick="openDetailsModal('AI Innovators', 'Technical', 'Build intelligent solutions and present your AI innovations.', '24 AUG 2026', '10:30 AM', 'Seminar Hall', 'Registered')" class="bg-darkNavy hover:bg-primaryBlue text-white font-poppins font-bold text-xs px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors shadow-sm">
-              <span>View Details</span>
-              <span>→</span>
-            </button>
-          </div>
-        </article>
-
-        <!-- EVENT CARD 3 — TECH QUIZ -->
-        <article class="event-card bg-white border border-customBorder rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow" data-category="Non-Technical" data-title="Tech Quiz">
-          <div class="flex flex-row">
-            
-            <!-- Left Image -->
-            <div class="relative w-[115px] bg-slate-900 flex-shrink-0 overflow-hidden flex items-center justify-center">
-              <svg class="w-full h-full object-cover" viewBox="0 0 300 300" fill="none">
-                <rect width="300" height="300" fill="#180C33"/>
-                <text x="150" y="190" font-family="Poppins" font-weight="bold" font-size="96" fill="#F5B51B" text-anchor="middle">?</text>
-              </svg>
-            </div>
-
-            <!-- Right Information Area -->
-            <div class="p-3 flex-1 flex flex-col justify-between space-y-1.5">
-              <div>
-                <span class="bg-lightYellow text-amber-700 px-2 py-0.5 rounded-full text-[10px] font-semibold inline-block mb-1">
-                  Non-Technical
-                </span>
-                <h2 class="font-poppins font-bold text-base text-darkNavy leading-tight">
-                  Tech Quiz
-                </h2>
-                <p class="text-xs text-secondaryText leading-snug mt-0.5">
-                  Test your knowledge in technology & science.
-                </p>
-              </div>
-
-              <!-- Metadata List -->
-              <div class="space-y-0.5 text-[11px] text-secondaryText pt-1">
-                <div class="flex items-center gap-1.5">
-                  <svg class="w-3.5 h-3.5 text-darkNavy" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                  <span class="font-semibold text-textDark">24 AUG 2026</span>
-                </div>
-                <div class="flex items-center gap-1.5">
-                  <svg class="w-3.5 h-3.5 text-darkNavy" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                  <span>02:00 PM • Auditorium</span>
-                </div>
-              </div>
-            </div>
-
+            <span class="font-semibold text-textMuted">Default</span>
           </div>
 
-          <!-- Bottom Action Bar Strip -->
-          <div class="bg-slate-50/70 border-t border-customBorder px-3 py-2 flex items-center justify-between">
-            <div class="bg-lightYellow text-amber-700 border border-amber-300 px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-1">
-              <span>🕐</span>
-              <span>Closing Soon</span>
+          <div class="flex items-center justify-between pt-1">
+            <div>
+              <p class="font-bold text-textDark">Application Version</p>
+              <p class="text-[10px] text-textMuted">Infinite Techfest 2026 v1.0.0</p>
             </div>
-
-            <button onclick="openDetailsModal('Tech Quiz', 'Non-Technical', 'Test your knowledge in technology, science, and beyond.', '24 AUG 2026', '02:00 PM', 'Auditorium', 'Closing Soon')" class="bg-darkNavy hover:bg-primaryBlue text-white font-poppins font-bold text-xs px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors shadow-sm">
-              <span>View Details</span>
-              <span>→</span>
-            </button>
+            <span class="font-mono text-textMuted">v1.0.0</span>
           </div>
-        </article>
-
-        <!-- EVENT CARD 4 — WEBVERSE -->
-        <article class="event-card bg-white border border-customBorder rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow" data-category="Workshop" data-title="WebVerse">
-          <div class="flex flex-row">
-            
-            <!-- Left Image -->
-            <div class="relative w-[115px] bg-slate-900 flex-shrink-0 overflow-hidden flex items-center justify-center">
-              <svg class="w-full h-full object-cover" viewBox="0 0 300 300" fill="none">
-                <rect width="300" height="300" fill="#0A1C38"/>
-                <text x="150" y="170" font-family="monospace" font-weight="bold" font-size="44" fill="#1677E8" text-anchor="middle">&lt;/&gt;</text>
-              </svg>
-            </div>
-
-            <!-- Right Information Area -->
-            <div class="p-3 flex-1 flex flex-col justify-between space-y-1.5">
-              <div>
-                <span class="bg-lightBlue text-primaryBlue px-2 py-0.5 rounded-full text-[10px] font-semibold inline-block mb-1">
-                  Workshop
-                </span>
-                <h2 class="font-poppins font-bold text-base text-darkNavy leading-tight">
-                  WebVerse
-                </h2>
-                <p class="text-xs text-secondaryText leading-snug mt-0.5">
-                  Learn, build & deploy modern web apps.
-                </p>
-              </div>
-
-              <!-- Metadata List -->
-              <div class="space-y-0.5 text-[11px] text-secondaryText pt-1">
-                <div class="flex items-center gap-1.5">
-                  <svg class="w-3.5 h-3.5 text-darkNavy" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                  <span class="font-semibold text-textDark">25 AUG 2026</span>
-                </div>
-                <div class="flex items-center gap-1.5">
-                  <svg class="w-3.5 h-3.5 text-darkNavy" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                  <span>11:00 AM • IT Lab, Block C</span>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- Bottom Action Bar Strip -->
-          <div class="bg-slate-50/70 border-t border-customBorder px-3 py-2 flex items-center justify-between">
-            <div class="bg-lightRed text-customRed border border-customRed/30 px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center gap-1">
-              <span class="w-3 h-3 rounded-full bg-customRed text-white flex items-center justify-center text-[8px]">✕</span>
-              <span>Full</span>
-            </div>
-
-            <button onclick="openWaitlistModal('WebVerse')" class="bg-darkNavy hover:bg-primaryBlue text-white font-poppins font-bold text-xs px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors shadow-sm">
-              <span>Join Waitlist</span>
-              <span>→</span>
-            </button>
-          </div>
-        </article>
-
-      </section>
-
-      <!-- EMPTY STATE CONTAINER -->
-      <section class="px-4">
-        <div id="empty-state" class="bg-white border border-dashed border-customBorder rounded-2xl p-6 text-center space-y-1.5">
-          <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-secondaryText">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
-          </div>
-          <h3 class="font-poppins font-bold text-base text-darkNavy">
-            No events found
-          </h3>
-          <p class="text-xs text-secondaryText">
-            Try another search or category.
-          </p>
         </div>
-      </section>
+      </div>
+
+
+      <!-- ========================================== -->
+      <!-- SCREEN 8: NOTIFICATIONS -->
+      <!-- ========================================== -->
+      <div id="screen-notifications" class="screen-view bg-slate-100 p-4 space-y-3">
+        <div class="flex items-center justify-between">
+          <h2 class="font-poppins font-bold text-xl text-[#0A1128]">Notifications</h2>
+          <button onclick="alert('All notifications marked as read.')" class="text-xs font-bold text-royalBlue hover:underline">Mark all as read</button>
+        </div>
+
+        <div class="space-y-2 text-xs">
+          <div class="bg-white p-3.5 rounded-xl border border-cardBorder shadow-sm space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-emerald-600">✅ Payment Verified</span>
+              <span class="text-[10px] text-textMuted">10 mins ago</span>
+            </div>
+            <p class="text-textDark">Your symposium registration payment of ₹350 has been verified.</p>
+          </div>
+
+          <div class="bg-white p-3.5 rounded-xl border border-cardBorder shadow-sm space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-royalBlue">🎉 AI Innovators Confirmed</span>
+              <span class="text-[10px] text-textMuted">1 hour ago</span>
+            </div>
+            <p class="text-textDark">Your seat registration for AI Innovators is confirmed.</p>
+          </div>
+
+          <div class="bg-white p-3.5 rounded-xl border border-cardBorder shadow-sm space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-amber-700">🎟️ QR Pass Ready</span>
+              <span class="text-[10px] text-textMuted">3 hours ago</span>
+            </div>
+            <p class="text-textDark">Your official event entry pass is active and ready for entry scan.</p>
+          </div>
+        </div>
+      </div>
 
     </main>
 
     <!-- FIXED BOTTOM NAVIGATION BAR -->
-    <nav class="bg-white border-t border-customBorder px-3 h-[60px] flex items-center justify-around absolute bottom-0 left-0 right-0 z-40 rounded-b-[36px] sm:rounded-b-[36px] shadow-lg">
+    <nav class="bg-[#0A1128] border-t border-slate-800 px-4 py-2 flex items-center justify-around absolute bottom-0 left-0 right-0 z-40 rounded-b-[40px] sm:rounded-b-[40px] shadow-2xl">
       
       <!-- Home -->
-      <a href="symposium-app.html" class="flex flex-col items-center gap-0.5 text-secondaryText hover:text-darkNavy">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-        <span class="text-[10px] font-medium">Home</span>
-      </a>
+      <button onclick="openScreen('screen-home')" id="nav-btn-home" class="nav-tab-btn flex flex-col items-center gap-1 text-goldAccent">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        <span class="text-[9px] font-bold">Home</span>
+      </button>
 
-      <!-- Events (ACTIVE ITEM) -->
-      <a href="#" class="flex flex-col items-center gap-0.5 text-darkNavy">
-        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
-        <span class="text-[10px] font-bold text-darkNavy">Events</span>
-      </a>
+      <!-- Events -->
+      <button onclick="openScreen('screen-events')" id="nav-btn-events" class="nav-tab-btn flex flex-col items-center gap-1 text-slate-400 hover:text-white">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+        <span class="text-[9px] font-medium">Events</span>
+      </button>
 
       <!-- Schedule -->
-      <a href="symposium-app.html" class="flex flex-col items-center gap-0.5 text-secondaryText hover:text-darkNavy">
+      <button onclick="openScreen('screen-schedule')" id="nav-btn-schedule" class="nav-tab-btn flex flex-col items-center gap-1 text-slate-400 hover:text-white">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        <span class="text-[10px] font-medium">Schedule</span>
-      </a>
+        <span class="text-[9px] font-medium">Schedule</span>
+      </button>
 
       <!-- QR Pass -->
-      <a href="symposium-app.html" class="flex flex-col items-center gap-0.5 text-secondaryText hover:text-darkNavy">
+      <button onclick="openScreen('screen-qrpass')" id="nav-btn-qrpass" class="nav-tab-btn flex flex-col items-center gap-1 text-slate-400 hover:text-white">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
-        <span class="text-[10px] font-medium">QR Pass</span>
-      </a>
+        <span class="text-[9px] font-medium">QR Pass</span>
+      </button>
 
       <!-- Profile -->
-      <a href="symposium-app.html" class="flex flex-col items-center gap-0.5 text-secondaryText hover:text-darkNavy">
+      <button onclick="openScreen('screen-profile')" id="nav-btn-profile" class="nav-tab-btn flex flex-col items-center gap-1 text-slate-400 hover:text-white">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-        <span class="text-[10px] font-medium">Profile</span>
-      </a>
+        <span class="text-[9px] font-medium">Profile</span>
+      </button>
 
     </nav>
 
-    <!-- REGISTRATION MODAL -->
-    <div id="modal-register" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-4">
-      <div class="bg-white rounded-2xl p-5 w-full max-w-sm shadow-2xl space-y-3">
+
+    <!-- ========================================== -->
+    <!-- INTERACTIVE MODALS (Registration & Certificate) -->
+    <!-- ========================================== -->
+
+    <!-- Multi-Step Registration Wizard Modal -->
+    <div id="modal-registration-wizard" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-4">
+      <div class="bg-white rounded-3xl p-5 w-full max-w-sm shadow-2xl space-y-4">
         <div class="flex items-center justify-between border-b pb-2">
-          <h3 class="font-poppins font-bold text-lg text-darkNavy">Register for CodeCraft</h3>
-          <button onclick="closeModal('modal-register')" class="text-secondaryText hover:text-darkNavy font-bold text-xl">&times;</button>
+          <div>
+            <span class="text-[9px] font-bold uppercase text-royalBlue">MULTI-STEP REGISTRATION</span>
+            <h3 id="wiz-event-title" class="font-poppins font-bold text-lg text-textDark">Event Title</h3>
+          </div>
+          <button onclick="closeModal('modal-registration-wizard')" class="text-textMuted font-bold text-xl">&times;</button>
         </div>
 
-        <div id="register-form" class="space-y-2 text-xs text-textDark">
-          <p><strong>Date:</strong> 23 AUG 2026</p>
-          <p><strong>Time:</strong> 09:00 AM</p>
-          <p><strong>Venue:</strong> Lab 404, Main Block</p>
-          <p><strong>Status:</strong> <span class="text-customGreen font-bold">Registration Open</span></p>
+        <!-- Step Indicator -->
+        <div class="flex items-center justify-between text-[10px] font-bold text-textMuted">
+          <span id="step-lbl-1" class="text-royalBlue">1. Details</span>
+          <span id="step-lbl-2">2. Team</span>
+          <span id="step-lbl-3">3. Payment UPI</span>
+        </div>
 
+        <!-- Step 1: Participant Info -->
+        <div id="wiz-step-1" class="space-y-2 text-xs">
+          <p class="font-bold text-textDark">Step 1: Participant Information</p>
+          <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 space-y-1">
+            <p><strong>Name:</strong> Purushothaman S</p>
+            <p><strong>College:</strong> R.P. Sarathy Institute of Technology</p>
+            <p><strong>Department:</strong> Computer Science & Engineering</p>
+          </div>
+          <button onclick="goToWizStep(2)" class="w-full bg-royalBlue text-white font-bold text-xs py-2 rounded-xl mt-2">Next: Team Selection &gt;</button>
+        </div>
+
+        <!-- Step 2: Team Selection -->
+        <div id="wiz-step-2" class="hidden space-y-2 text-xs">
+          <p class="font-bold text-textDark">Step 2: Team / Individual Selection</p>
+          <div class="space-y-2">
+            <label class="flex items-center gap-2 border p-2 rounded-xl cursor-pointer">
+              <input type="radio" name="wiz-team" checked class="text-royalBlue">
+              <span>Individual Participation</span>
+            </label>
+            <label class="flex items-center gap-2 border p-2 rounded-xl cursor-pointer">
+              <input type="radio" name="wiz-team" class="text-royalBlue">
+              <span>Team Participation (2-4 Members)</span>
+            </label>
+          </div>
           <div class="flex gap-2 pt-2">
-            <button onclick="closeModal('modal-register')" class="flex-1 border border-customBorder text-secondaryText font-bold text-xs py-2 rounded-lg">Cancel</button>
-            <button onclick="confirmRegistration()" class="flex-1 bg-darkNavy text-white font-bold text-xs py-2 rounded-lg">Confirm Registration</button>
+            <button onclick="goToWizStep(1)" class="border border-cardBorder text-textDark font-bold text-xs px-3 py-2 rounded-xl">Back</button>
+            <button onclick="goToWizStep(3)" class="flex-1 bg-royalBlue text-white font-bold text-xs py-2 rounded-xl">Next: Payment &gt;</button>
           </div>
         </div>
 
-        <div id="register-success" class="hidden text-center space-y-2 py-2">
-          <div class="w-10 h-10 bg-lightGreen text-customGreen rounded-full flex items-center justify-center mx-auto text-lg font-bold">✓</div>
-          <h4 class="font-poppins font-bold text-base text-customGreen">Registration Successful!</h4>
-          <p class="text-xs text-secondaryText">Your seat for CodeCraft is confirmed.</p>
-          <button onclick="closeModal('modal-register')" class="w-full bg-darkNavy text-white font-bold text-xs py-2 rounded-lg">Done</button>
+        <!-- Step 3: Payment UPI & Proof Upload -->
+        <div id="wiz-step-3" class="hidden space-y-2 text-xs text-center">
+          <p class="font-bold text-textDark">Step 3: Payment Instructions (₹150 Registration Fee)</p>
+          <div class="bg-slate-50 p-3 rounded-xl border text-center space-y-2">
+            <p class="font-mono text-royalBlue font-bold text-sm">UPI ID: rpsit.techfest@upi</p>
+            <div class="flex justify-center gap-2 text-[10px]">
+              <button onclick="alert('Opening Google Pay...')" class="bg-blue-600 text-white font-bold px-2.5 py-1 rounded-lg">GPay</button>
+              <button onclick="alert('Opening PhonePe...')" class="bg-indigo-600 text-white font-bold px-2.5 py-1 rounded-lg">PhonePe</button>
+              <button onclick="alert('Opening Paytm...')" class="bg-sky-600 text-white font-bold px-2.5 py-1 rounded-lg">Paytm</button>
+            </div>
+          </div>
+
+          <input type="text" placeholder="Enter UPI Transaction / UTR Ref No." class="w-full bg-slate-100 border p-2 rounded-xl text-xs font-mono">
+          
+          <div class="flex gap-2 pt-2">
+            <button onclick="goToWizStep(2)" class="border border-cardBorder text-textDark font-bold text-xs px-3 py-2 rounded-xl">Back</button>
+            <button onclick="submitRegistration()" class="flex-1 bg-emerald-600 text-white font-bold text-xs py-2 rounded-xl">Submit Registration</button>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- EVENT DETAILS MODAL -->
-    <div id="modal-details" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-4">
-      <div class="bg-white rounded-2xl p-5 w-full max-w-sm shadow-2xl space-y-3">
-        <div class="flex items-center justify-between border-b pb-2">
-          <div>
-            <span id="det-cat" class="text-[10px] font-bold text-primaryBlue bg-lightBlue px-2 py-0.5 rounded-full inline-block mb-0.5">Category</span>
-            <h3 id="det-title" class="font-poppins font-bold text-lg text-darkNavy">Event Title</h3>
-          </div>
-          <button onclick="closeModal('modal-details')" class="text-secondaryText hover:text-darkNavy font-bold text-xl">&times;</button>
+    <!-- Certificate Display Modal -->
+    <div id="modal-certificate" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+      <div class="bg-white rounded-3xl p-5 w-full max-w-sm shadow-2xl space-y-3 border-4 border-goldAccent/30">
+        <div class="bg-gradient-to-r from-[#0A1128] to-royalBlue text-white p-4 rounded-xl text-center">
+          <p class="text-[9px] font-bold text-goldAccent uppercase tracking-widest">R.P. SARATHY INSTITUTE OF TECHNOLOGY</p>
+          <h3 id="cert-display-type" class="font-poppins font-bold text-base mt-0.5">Certificate of Participation</h3>
+          <p class="text-[10px] text-blue-100">INFINITE TECHFEST 2026</p>
         </div>
 
-        <div class="space-y-1.5 text-xs text-textDark">
-          <p class="text-secondaryText" id="det-desc">Description</p>
-          <p><strong>Date:</strong> <span id="det-date">24 AUG 2026</span></p>
-          <p><strong>Time:</strong> <span id="det-time">10:30 AM</span></p>
-          <p><strong>Venue:</strong> <span id="det-venue">Seminar Hall</span></p>
-          <p><strong>Status:</strong> <span id="det-status" class="font-bold">Status</span></p>
+        <div class="text-center text-xs space-y-1.5 py-2">
+          <p class="text-textMuted">This is proudly awarded to</p>
+          <p class="font-poppins font-bold text-base text-[#0A1128]">PURUSHOTHAMAN S</p>
+          <p class="text-textMuted">for successfully participating in <strong id="cert-display-event" class="text-textDark">CodeCraft</strong></p>
+          <p class="text-[10px] text-textMuted">Issued on 26 AUGUST 2026 • Verified Seal 🏅</p>
         </div>
 
-        <button onclick="closeModal('modal-details')" class="w-full bg-darkNavy text-white font-bold text-xs py-2 rounded-lg">Close</button>
+        <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 p-2 rounded-xl text-[10px] text-center font-bold">
+          ✓ Digitally Verified Certificate (<span id="cert-display-id">CERT-2026-CC</span>)
+        </div>
+
+        <div class="flex gap-2">
+          <button onclick="alert('Downloading Certificate PDF...')" class="flex-1 bg-royalBlue text-white font-bold text-xs py-2 rounded-xl">Download PDF</button>
+          <button onclick="closeModal('modal-certificate')" class="border border-cardBorder text-textDark font-bold text-xs px-3 py-2 rounded-xl">Close</button>
+        </div>
       </div>
     </div>
 
   </div>
 
-  <!-- JavaScript Handlers -->
+
+  <!-- JAVASCRIPT APP STATE & INTERACTION HANDLERS -->
   <script>
-    let activeCategory = 'All';
+    let screenStack = ['screen-home'];
 
-    function handleSearch(query) {
-      const clearBtn = document.getElementById('clear-btn');
-      clearBtn.classList.toggle('hidden', query.trim() === '');
-      filterEvents();
-    }
+    function openScreen(screenId) {
+      document.querySelectorAll('.screen-view').forEach(el => el.classList.remove('active-screen'));
+      const target = document.getElementById(screenId);
+      if (target) {
+        target.classList.add('active-screen');
+        if (screenId !== screenStack[screenStack.length - 1]) {
+          screenStack.push(screenId);
+        }
+      }
 
-    function clearSearch() {
-      const input = document.getElementById('search-input');
-      input.value = '';
-      document.getElementById('clear-btn').classList.add('hidden');
-      filterEvents();
-    }
+      // Update header state
+      const brand = document.getElementById('header-brand');
+      const back = document.getElementById('header-back');
+      const pageTitle = document.getElementById('header-page-title');
 
-    function filterCategory(cat, btn) {
-      activeCategory = cat;
-      document.querySelectorAll('.cat-chip').forEach(el => {
-        el.classList.remove('bg-darkNavy', 'text-white');
-        el.classList.add('bg-white', 'border', 'border-customBorder', 'text-darkNavy');
+      if (screenId === 'screen-home') {
+        brand.classList.remove('hidden');
+        back.classList.add('hidden');
+      } else {
+        brand.classList.add('hidden');
+        back.classList.remove('hidden');
+        back.classList.add('flex');
+        
+        let titleText = 'Details';
+        if (screenId === 'screen-events') titleText = 'Discover Events';
+        if (screenId === 'screen-qrpass') titleText = 'QR Pass Details';
+        if (screenId === 'screen-schedule') titleText = 'Symposium Schedule';
+        if (screenId === 'screen-my-certificates') titleText = 'My Certificates';
+        if (screenId === 'screen-profile') titleText = 'My Profile';
+        if (screenId === 'screen-settings') titleText = 'Settings';
+        if (screenId === 'screen-notifications') titleText = 'Notifications';
+        
+        pageTitle.innerText = titleText;
+      }
+
+      // Update bottom navigation tabs
+      document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+        btn.classList.remove('text-goldAccent');
+        btn.classList.add('text-slate-400');
       });
-      btn.classList.remove('bg-white', 'border', 'border-customBorder');
-      btn.classList.add('bg-darkNavy', 'text-white');
-      filterEvents();
+
+      let activeTabBtn = null;
+      if (screenId === 'screen-home') activeTabBtn = document.getElementById('nav-btn-home');
+      if (screenId === 'screen-events') activeTabBtn = document.getElementById('nav-btn-events');
+      if (screenId === 'screen-schedule') activeTabBtn = document.getElementById('nav-btn-schedule');
+      if (screenId === 'screen-qrpass') activeTabBtn = document.getElementById('nav-btn-qrpass');
+      if (screenId === 'screen-profile') activeTabBtn = document.getElementById('nav-btn-profile');
+
+      if (activeTabBtn) {
+        activeTabBtn.classList.remove('text-slate-400');
+        activeTabBtn.classList.add('text-goldAccent');
+      }
     }
 
-    function filterEvents() {
-      const query = document.getElementById('search-input').value.toLowerCase().trim();
-      const cards = document.querySelectorAll('.event-card');
-      let visibleCount = 0;
+    function goBack() {
+      if (screenStack.length > 1) {
+        screenStack.pop();
+        const prev = screenStack[screenStack.length - 1];
+        openScreen(prev);
+      } else {
+        openScreen('screen-home');
+      }
+    }
 
+    function filterEventsList(query) {
+      const cards = document.querySelectorAll('.discover-card');
       cards.forEach(card => {
-        const cat = card.getAttribute('data-category');
-        const title = card.getAttribute('data-title').toLowerCase();
-        const matchesCategory = (activeCategory === 'All' || cat === activeCategory);
-        const matchesQuery = (title.includes(query) || cat.toLowerCase().includes(query));
-
-        if (matchesCategory && matchesQuery) {
+        const title = card.getAttribute('data-[#title]') || '';
+        if (title.includes(query.toLowerCase())) {
           card.style.display = 'block';
-          visibleCount++;
         } else {
           card.style.display = 'none';
         }
       });
-
-      const emptyState = document.getElementById('empty-state');
-      if (visibleCount === 0) {
-        emptyState.style.display = 'block';
-      } else {
-        emptyState.style.display = 'none';
-      }
     }
 
-    function openRegisterModal(title, date, time, venue) {
-      document.getElementById('register-form').classList.remove('hidden');
-      document.getElementById('register-success').classList.add('hidden');
-      document.getElementById('modal-register').classList.remove('hidden');
+    function filterCategory(cat, btn) {
+      document.querySelectorAll('.event-filter-chip').forEach(el => {
+        el.classList.remove('bg-[#0A1128]', 'text-white');
+        el.classList.add('bg-white', 'text-textDark', 'border');
+      });
+      btn.classList.remove('bg-white', 'text-textDark', 'border');
+      btn.classList.add('bg-[#0A1128]', 'text-white');
+
+      const cards = document.querySelectorAll('.discover-card');
+      cards.forEach(card => {
+        const itemCat = card.getAttribute('data-cat');
+        if (cat === 'All' || itemCat === cat) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
     }
 
-    function confirmRegistration() {
-      document.getElementById('register-form').classList.add('hidden');
-      document.getElementById('register-success').classList.remove('hidden');
+    function openRegistrationWizard(eventTitle) {
+      document.getElementById('wiz-event-title').innerText = eventTitle;
+      goToWizStep(1);
+      document.getElementById('modal-registration-wizard').classList.remove('hidden');
     }
 
-    function openDetailsModal(title, cat, desc, date, time, venue, status) {
-      document.getElementById('det-title').innerText = title;
-      document.getElementById('det-cat').innerText = cat;
-      document.getElementById('det-desc').innerText = desc;
-      document.getElementById('det-date').innerText = date;
-      document.getElementById('det-time').innerText = time;
-      document.getElementById('det-venue').innerText = venue;
-      document.getElementById('det-status').innerText = status;
-      document.getElementById('modal-details').classList.remove('hidden');
+    function goToWizStep(stepNum) {
+      [1, 2, 3].forEach(num => {
+        document.getElementById(`wiz-step-${num}`).classList.add('hidden');
+        document.getElementById(`step-lbl-${num}`).classList.remove('text-royalBlue');
+      });
+
+      document.getElementById(`wiz-step-${stepNum}`).classList.remove('hidden');
+      document.getElementById(`step-lbl-${stepNum}`).classList.add('text-royalBlue');
     }
 
-    function openWaitlistModal(title) {
-      alert(`You have joined the waitlist for ${title}. We will notify you if a seat opens up.`);
+    function submitRegistration() {
+      closeModal('modal-registration-wizard');
+      alert('Registration & Payment Reference Submitted!\nYour registration is in progress and your status will update to Verified.');
+      openScreen('screen-qrpass');
+    }
+
+    function openCertificateModal(eventTitle, certType, certId) {
+      document.getElementById('cert-display-event').innerText = eventTitle;
+      document.getElementById('cert-display-type').innerText = certType;
+      document.getElementById('cert-display-id').innerText = certId;
+      document.getElementById('modal-certificate').classList.remove('hidden');
     }
 
     function closeModal(modalId) {
       document.getElementById(modalId).classList.add('hidden');
     }
 
-    function toggleNotifications() {
-      alert("Notifications:\n• Payment verified\n• AI Innovators seat confirmed\n• QR Pass ready");
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert(`Copied to clipboard: ${text}`);
+      }).catch(() => {
+        alert(`Pass ID: ${text}`);
+      });
+    }
+
+    function toggleMyScheduleOnly(btn) {
+      alert("Filter toggled: Showing your registered events only.");
     }
   </script>
 
