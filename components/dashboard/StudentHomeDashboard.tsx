@@ -65,7 +65,7 @@ function StudentHomeDashboardBase() {
     <SafeAreaView className="flex-1 bg-background" edges={["top"]}>
       <ScrollView
         className="flex-1"
-        contentContainerClassName="pb-8"
+        contentContainerClassName="pb-8 max-w-5xl mx-auto w-full px-2 sm:px-4"
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
@@ -73,15 +73,14 @@ function StudentHomeDashboardBase() {
       >
         <DashboardHeader
           avatarUrl={authUser?.avatarUrl ?? null}
-          fullName={authUser?.fullName ?? "K. S. Purushothaman"}
+          fullName={authUser?.fullName ?? ""}
           unreadNotificationCount={data.unreadNotificationCount}
         />
 
         <DashboardGreeting
           timeOfDayGreeting={getTimeOfDayGreeting()}
-          fullName={authUser?.fullName ?? "K. S. Purushothaman"}
+          fullName={authUser?.fullName ?? ""}
         />
-
 
         <StatusBanner
           registrationActive={data.registrationActive}
@@ -106,6 +105,7 @@ function StudentHomeDashboardBase() {
 
       <StudentBottomNav />
     </SafeAreaView>
+
   );
 }
 

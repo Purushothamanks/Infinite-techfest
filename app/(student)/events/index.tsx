@@ -1,18 +1,8 @@
-import { LayoutGrid } from "lucide-react-native";
-
-import { ComingSoonScreen } from "@/components/dashboard/ComingSoonScreen";
+import { EventsListScreen } from "@/components/events/EventsListScreen";
 
 /**
- * Placeholder stub for the Events screen (see
- * constants/navigation.ts ROUTES.EVENTS doc). Replace with the real
- * Events list once its design exists.
+ * Student Events & Competitions List Route.
  */
-export default function EventsScreen() {
-  return (
-    <ComingSoonScreen
-      title="Events"
-      description="Browse and register for symposium events here soon."
-      icon={LayoutGrid}
-    />
-  );
+export default function EventsRoute() {
+  return <EventsListScreen />;
 }

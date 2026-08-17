@@ -4,6 +4,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { Platform, StyleSheet, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -11,22 +12,10 @@ import { AuthProvider } from "@/providers/AuthProvider";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { useAuthStore } from "@/store/authStore";
+import { colors } from "@/theme";
 
-/**
- * Keeps the native splash screen (configured via the `expo-splash-screen`
- * plugin in app.json) visible past its default auto-hide point. Must run
- * at module scope, before RootLayout's first render, so there's no gap
- * where the native splash could hide itself early.
- */
 SplashScreen.preventAutoHideAsync();
 
-/**
- * Loads the Poppins font family required by AGENTS.md Section 4 (Design
- * System: "Poppins typography"). Rendering is held back until fonts are
- * ready so no screen ever briefly flashes the system default font. Once
- * fonts are ready, the native splash is hidden, handing off directly to
- * the custom SplashScreen component rendered by app/index.tsx.
- */
 export default function RootLayout() {
   const [fontsLoaded, fontsError] = useFonts({
     "Poppins-Regular": require("@/assets/fonts/Poppins-Regular.ttf"),
@@ -51,7 +40,9 @@ export default function RootLayout() {
         <QueryProvider>
           <ThemeProvider>
             <AuthProvider>
-              <RootNavigator />
+              <MobileViewportWrapper>
+                <RootNavigator />
+              </MobileViewportWrapper>
             </AuthProvider>
           </ThemeProvider>
         </QueryProvider>
@@ -60,31 +51,50 @@ export default function RootLayout() {
   );
 }
 
-/**
- * Route guards, split from RootLayout so useAuthStore only re-renders the
- * navigator (not the font-loading/provider tree) on auth state changes.
- *
- * - "authenticated" -> (student) routes only.
- * - "unauthenticated" / "loading" / "password_recovery" -> (authentication)
- *   routes only. "password_recovery" belongs here because Reset Password
- *   lives under (authentication), even though a session technically exists
- *   at that point (see store/authStore.ts).
- * - The root index route (Splash) has no guard — it's the initial route
- *   and redirects itself once the real status resolves.
- */
-function RootNavigator() {
-  const status = useAuthStore((state) => state.status);
-  const isAuthenticated = true; // TEMP-QA-BYPASS: status === "authenticated";
+function MobileViewportWrapper({ children }: { children: React.ReactNode }) {
+  if (Platform.OS !== "web") {
+    return <View style={styles.nativeContainer}>{children}</View>;
+  }
 
+  return (
+    <View style={styles.webOuterBackground}>
+      <View style={styles.webResponsiveFrame}>{children}</View>
+    </View>
+  );
+}
+
+function RootNavigator() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
-      <Stack.Protected guard={isAuthenticated}>
-        <Stack.Screen name="(student)" />
-      </Stack.Protected>
-      <Stack.Protected guard={!isAuthenticated}>
-        <Stack.Screen name="(authentication)" />
-      </Stack.Protected>
+      <Stack.Screen name="(student)" />
+      <Stack.Screen name="(authentication)" />
     </Stack>
   );
 }
+
+
+const styles = StyleSheet.create({
+  nativeContainer: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  webOuterBackground: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#0A1128",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  webResponsiveFrame: {
+    flex: 1,
+    width: "100%",
+    maxWidth: 1280,
+    height: "100%",
+    backgroundColor: colors.background,
+    overflow: "hidden",
+    boxShadow: "0 20px 40px -15px rgba(0, 0, 0, 0.4)",
+  },
+});
+

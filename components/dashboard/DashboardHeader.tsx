@@ -7,10 +7,10 @@ import { AvatarPlaceholder } from "@/components/dashboard/AvatarPlaceholder";
 import { ROUTES } from "@/constants/navigation";
 import { colors } from "@/theme";
 
-const LOGO_ASSET = require("@/assets/images/Branding/infinite-techfest-horizontal.png");
+const BRAND_ICON = require("@/assets/images/Branding/infinite-techfest-icon.png");
 
-const BELL_ICON_SIZE = 24;
-const AVATAR_SIZE = 52;
+const BELL_ICON_SIZE = 22;
+const AVATAR_SIZE = 44;
 const MAX_BADGE_COUNT = 9;
 
 interface DashboardHeaderProps {
@@ -19,14 +19,6 @@ interface DashboardHeaderProps {
   unreadNotificationCount: number;
 }
 
-/**
- * Top header for the Student Home Dashboard: brand wordmark, notification
- * bell (with unread badge), and profile avatar, per
- * Designs/Student Module/1. STUDENT HOME DASHBOARD UI DESIGN.png.
- *
- * Navigates to the Notifications and Profile placeholder routes (see
- * constants/navigation.ts ROUTES doc) — no business logic lives here.
- */
 function DashboardHeaderBase({
   avatarUrl,
   fullName,
@@ -40,18 +32,32 @@ function DashboardHeaderBase({
   const displayName = fullName.trim().length > 0 ? fullName.trim() : "your";
 
   return (
-    <View className="flex-row items-center justify-between px-6 py-3">
-      <View>
+    <View className="flex-row items-center justify-between px-4 py-3 bg-surface border-b border-border">
+      {/* Left: Brand Logo Icon + Typography */}
+      <TouchableOpacity
+        onPress={() => router.push(ROUTES.HOME)}
+        activeOpacity={0.85}
+        className="flex-row items-center gap-2.5 flex-1 pr-2"
+      >
         <Image
-          source={LOGO_ASSET}
+          source={BRAND_ICON}
           resizeMode="contain"
-          className="h-11 w-[190px]"
+          style={{ width: 42, height: 42, borderRadius: 10 }}
           accessibilityRole="image"
-          accessibilityLabel="Infinite Techfest 2026"
+          accessibilityLabel="Infinite Techfest Logo Icon"
         />
-      </View>
+        <View className="justify-center">
+          <Text className="font-poppins-bold text-base leading-tight text-primary">
+            INFINITE TECHFEST
+          </Text>
+          <Text className="font-poppins-semibold text-[11px] leading-tight text-accent tracking-wide">
+            2026 • RPSIT
+          </Text>
+        </View>
+      </TouchableOpacity>
 
-      <View className="flex-row items-center gap-3">
+      {/* Right: Actions */}
+      <View className="flex-row items-center gap-2.5">
         <TouchableOpacity
           onPress={() => router.push(ROUTES.NOTIFICATIONS)}
           accessibilityRole="button"
@@ -60,13 +66,12 @@ function DashboardHeaderBase({
               ? `Notifications, ${unreadNotificationCount} unread`
               : "Notifications"
           }
-          accessibilityHint="Opens your notifications"
-          className="h-11 w-11 items-center justify-center rounded-full"
+          className="h-10 w-10 items-center justify-center rounded-full bg-background border border-border"
           hitSlop={4}
         >
-          <Bell size={BELL_ICON_SIZE} color={colors.text.primary} />
+          <Bell size={BELL_ICON_SIZE} color={colors.primary} />
           {unreadNotificationCount > 0 ? (
-            <View className="absolute right-1 top-0.5 h-4 min-w-4 items-center justify-center rounded-full bg-error px-1">
+            <View className="absolute -right-0.5 -top-0.5 h-4 min-w-4 items-center justify-center rounded-full bg-error px-1">
               <Text className="font-poppins-semibold text-[10px] leading-none text-text-inverse">
                 {badgeLabel}
               </Text>
@@ -83,14 +88,14 @@ function DashboardHeaderBase({
             <Image
               source={{ uri: avatarUrl }}
               style={{ width: AVATAR_SIZE, height: AVATAR_SIZE }}
-              className="rounded-full border border-border"
+              className="rounded-full border border-primary/30"
               accessibilityRole="image"
               accessibilityLabel="Your profile photo"
             />
           ) : (
             <View
               style={{ width: AVATAR_SIZE, height: AVATAR_SIZE }}
-              className="items-center justify-center overflow-hidden rounded-full border border-border bg-primary/5"
+              className="items-center justify-center overflow-hidden rounded-full border border-primary/30 bg-primary/5"
               accessibilityRole="image"
               accessibilityLabel={`${displayName} profile picture placeholder`}
             >
