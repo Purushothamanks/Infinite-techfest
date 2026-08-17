@@ -1,11 +1,10 @@
 import { router } from "expo-router";
 import {
-    CheckCircle2,
-    ChevronRight,
-    Clock,
-    Lock,
-    Shield,
-    XCircle,
+  CheckCircle2,
+  ChevronRight,
+  Clock,
+  ShieldCheck,
+  XCircle,
 } from "lucide-react-native";
 import { memo } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
@@ -19,8 +18,6 @@ interface PaymentStatusCardProps {
 }
 
 const STATUS_ICON_SIZE = 14;
-const SHIELD_ICON_SIZE = 56;
-const LOCK_ICON_SIZE = 22;
 const CHEVRON_ICON_SIZE = 14;
 
 const STATUS_META: Record<
@@ -59,11 +56,8 @@ const STATUS_META: Record<
 };
 
 /**
- * "Payment Status" card, per
- * Designs/Student Module/1. STUDENT HOME DASHBOARD UI DESIGN.png: status
- * label (never color-only — paired with a distinct icon per state and a
- * text label), supporting message, a shield watermark, and a "View
- * Details" link to Payment Status.
+ * "Payment Status" card with cleanly aligned top-right security shield badge,
+ * per Designs/Student Module/1. STUDENT HOME DASHBOARD UI DESIGN.png.
  */
 function PaymentStatusCardBase({ summary }: PaymentStatusCardProps) {
   const meta = STATUS_META[summary.status];
@@ -71,32 +65,25 @@ function PaymentStatusCardBase({ summary }: PaymentStatusCardProps) {
 
   return (
     <View className="flex-1 overflow-hidden rounded-2xl border border-border bg-surface p-4">
-      <View
-        className="absolute -right-2 bottom-2 items-center justify-center opacity-15"
-        importantForAccessibility="no-hide-descendants"
-      >
-        <Shield
-          size={SHIELD_ICON_SIZE}
-          color={colors.success}
-          strokeWidth={1.5}
-        />
-        <View className="absolute items-center justify-center">
-          <Lock size={LOCK_ICON_SIZE} color={colors.success} strokeWidth={2} />
+      {/* Top Header Row with Title and Aligned Security Badge */}
+      <View className="flex-row items-center justify-between">
+        <Text className="font-poppins-bold text-sm text-primary">
+          Payment Status
+        </Text>
+
+        <View className="h-8 w-8 items-center justify-center rounded-full bg-emerald-500/10 border border-emerald-500/20">
+          <ShieldCheck size={18} color="#059669" />
         </View>
       </View>
 
-      <Text className="font-poppins-bold text-sm text-primary">
-        Payment Status
-      </Text>
-
-      <View className="mt-2 flex-row items-center gap-1.5">
+      <View className="mt-1 flex-row items-center gap-1.5">
         <StatusIcon size={STATUS_ICON_SIZE} color={meta.iconColor} />
         <Text className={`font-poppins-bold text-sm ${meta.textClass}`}>
           {meta.label}
         </Text>
       </View>
 
-      <Text className="mt-1.5 max-w-[85%] font-poppins-regular text-xs leading-4 text-text-secondary">
+      <Text className="mt-1.5 font-poppins-regular text-xs leading-4 text-text-secondary">
         {summary.message}
       </Text>
 
@@ -104,7 +91,7 @@ function PaymentStatusCardBase({ summary }: PaymentStatusCardProps) {
         onPress={() => router.push(ROUTES.PAYMENT_STATUS)}
         accessibilityRole="button"
         accessibilityLabel="View payment details"
-        className="mt-2 flex-row items-center gap-1 self-start"
+        className="mt-3 flex-row items-center gap-1 self-start"
       >
         <Text className="font-poppins-semibold text-xs text-primary">
           View Details
@@ -116,3 +103,4 @@ function PaymentStatusCardBase({ summary }: PaymentStatusCardProps) {
 }
 
 export const PaymentStatusCard = memo(PaymentStatusCardBase);
+
