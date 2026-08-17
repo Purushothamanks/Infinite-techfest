@@ -12,63 +12,72 @@ export async function fetchStudentDashboard(): Promise<StudentDashboardSummary> 
 
   const isFullySet = isPaymentVerified;
 
+  // Registered events list only contains items if user has registered or verified
+  const registeredEvents = !isRegistered && !isFullySet
+    ? []
+    : [
+        {
+          id: "evt-codecraft",
+          title: "CodeCraft",
+          category: "Coding",
+          date: "2026-08-23",
+          time: "09:00 AM",
+          location: "Lab 404",
+          status: isFullySet ? ("registered" as const) : ("pending_payment" as const),
+        },
+        {
+          id: "evt-ai-innovators",
+          title: "AI Innovators",
+          category: "AI / ML",
+          date: "2026-08-24",
+          time: "10:30 AM",
+          location: "Seminar Hall",
+          status: isFullySet ? ("registered" as const) : ("pending_payment" as const),
+        },
+        {
+          id: "evt-tech-quiz",
+          title: "Tech Quiz",
+          category: "Quiz",
+          date: "2026-08-24",
+          time: "02:00 PM",
+          location: "Auditorium",
+          status: "pending_payment" as const,
+        },
+        {
+          id: "evt-robowar",
+          title: "RoboWars",
+          category: "Robotics",
+          date: "2026-08-25",
+          time: "11:00 AM",
+          location: "Ground Floor Arena",
+          status: isFullySet ? ("registered" as const) : ("pending_payment" as const),
+        },
+      ];
+
+  const nextEvent = isFullySet
+    ? {
+        id: "evt-ai-innovators",
+        title: "AI Innovators",
+        date: "2026-08-24",
+        time: "10:30 AM",
+        location: "Seminar Hall",
+        daysRemaining: 1,
+      }
+    : null;
+
   return {
     registrationActive: isRegistered || isFullySet,
     paymentVerified: isFullySet,
     qrPassReady: isFullySet,
-    registeredEvents: [
-      {
-        id: "evt-codecraft",
-        title: "CodeCraft",
-        category: "Coding",
-        date: "2026-08-23",
-        time: "09:00 AM",
-        location: "Lab 404",
-        status: isFullySet ? "registered" : "pending_payment",
-      },
-      {
-        id: "evt-ai-innovators",
-        title: "AI Innovators",
-        category: "AI / ML",
-        date: "2026-08-24",
-        time: "10:30 AM",
-        location: "Seminar Hall",
-        status: isFullySet ? "registered" : "pending_payment",
-      },
-      {
-        id: "evt-tech-quiz",
-        title: "Tech Quiz",
-        category: "Quiz",
-        date: "2026-08-24",
-        time: "02:00 PM",
-        location: "Auditorium",
-        status: "pending_payment",
-      },
-      {
-        id: "evt-robowar",
-        title: "RoboWars",
-        category: "Robotics",
-        date: "2026-08-25",
-        time: "11:00 AM",
-        location: "Ground Floor Arena",
-        status: isFullySet ? "registered" : "pending_payment",
-      },
-    ],
-    nextEvent: {
-      id: "evt-ai-innovators",
-      title: "AI Innovators",
-      date: "2026-08-24",
-      time: "10:30 AM",
-      location: "Seminar Hall",
-      daysRemaining: 1,
-    },
+    registeredEvents,
+    nextEvent,
     qrPassValue: isFullySet ? "ITF2026-PASS-8921-RPSIT" : null,
     paymentStatus: {
       status: isFullySet ? "verified" : isPaymentSubmitted ? "pending" : "none",
       message: isFullySet
         ? `Welcome, ${authUser?.fullName || "Delegate"}! Your payment is successfully verified.`
         : isPaymentSubmitted
-        ? "Payment proof submitted! Verification in progress."
+        ? "Payment proof submitted! Verification in progress by Accounts Desk."
         : "Complete registration & payment to activate pass.",
     },
     certificateCount: isFullySet ? 1 : 0,
@@ -92,7 +101,8 @@ export async function fetchStudentDashboard(): Promise<StudentDashboardSummary> 
         location: "Auditorium",
       },
     ],
-    unreadNotificationCount: 3,
+    unreadNotificationCount: isFullySet ? 4 : 2,
   };
 }
+
 
