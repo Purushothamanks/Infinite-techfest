@@ -7,7 +7,6 @@
 export const colors = {
   primary: "#0B2A6F",
   accent: "#E8A11C",
-  royalblue: "#2563EB",
 
   background: "#FFFFFF",
   surface: "#FFFFFF",
@@ -25,6 +24,7 @@ export const colors = {
   warning: "#F59E0B",
   error: "#EF4444",
   info: "#3B82F6",
+  royalblue: "#2563EB",
 } as const;
 
 export type Colors = typeof colors;

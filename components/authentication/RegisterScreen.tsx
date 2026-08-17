@@ -65,6 +65,21 @@ const DEPARTMENT_OPTIONS = DEPARTMENTS.map((department) => ({
   label: department.name,
 }));
 
+/**
+ * Register Screen UI.
+ *
+ * Pure presentational + form-state component per
+ * Designs/Authentication/4. Register Screen.png: logo, hero illustration,
+ * "Create Your Account" heading, the student information / academic
+ * details / credentials form fields, a Terms & Privacy checkbox, the
+ * Create Account / Sign In actions, a Supabase-secured badge, legal links,
+ * and footer branding.
+ *
+ * Form state is handled locally via react-hook-form + zod — no Supabase
+ * call, no auth/session logic. Submission is left as a TODO (matching the
+ * pattern already used in LoginScreen.tsx) since the auth service layer
+ * doesn't exist yet — see services/.
+ */
 export default function RegisterScreen() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
@@ -101,6 +116,11 @@ export default function RegisterScreen() {
     setSubmitError(null);
     setIsSubmitting(true);
 
+    // Extra fields (fullName, collegeName, departmentCode, academicYear,
+    // registerNumber) are stored in Supabase Auth's user_metadata — no
+    // profiles table exists yet, per the decision recorded in the auth
+    // implementation task. isLikelyDuplicate is intentionally not surfaced
+    // to the user; see services/authService.ts SignUpResult doc.
     const { error } = await signUp(values.email, values.password, {
       fullName: values.fullName,
       collegeName: values.collegeName,
@@ -116,7 +136,10 @@ export default function RegisterScreen() {
       return;
     }
 
-    router.replace(ROUTES.HOME);
+    router.push({
+      pathname: ROUTES.VERIFY_EMAIL,
+      params: { email: values.email },
+    });
   }, []);
 
   const passwordRightAccessory = useMemo(
@@ -171,7 +194,7 @@ export default function RegisterScreen() {
             <Image
               source={LOGO_ASSET}
               resizeMode="contain"
-              style={{ width: 280, height: 75 }}
+              className="h-[88px] w-full max-w-[340px]"
               accessibilityRole="image"
               accessibilityLabel="Infinite Techfest 2026 logo"
             />
@@ -179,22 +202,22 @@ export default function RegisterScreen() {
             <Image
               source={HERO_ASSET}
               resizeMode="contain"
-              style={{ width: "100%", height: 160, marginTop: 10 }}
+              className="mt-3.5 h-[220px] w-full scale-110"
               accessibilityRole="image"
-              accessibilityLabel="Students collaborating illustrations"
+              accessibilityLabel="Students and a robot collaborating with technology illustrations"
             />
 
-            <Text className="mt-3 font-poppins-bold text-2xl text-primary">
+            <Text className="mt-4 font-poppins-bold text-2xl text-primary">
               Create Your Account
             </Text>
-            <Text className="mt-1 text-center font-poppins-regular text-xs text-text-secondary">
+            <Text className="mt-1 text-center font-poppins-regular text-sm text-text-secondary">
               Join Infinite Techfest and start participating in exciting
               symposium events.
             </Text>
           </View>
 
           {/* Form section. */}
-          <View className="mt-5">
+          <View className="mt-6">
             <Controller
               control={control}
               name="fullName"
@@ -214,7 +237,7 @@ export default function RegisterScreen() {
               )}
             />
 
-            <View className="mt-3.5">
+            <View className="mt-4">
               <Controller
                 control={control}
                 name="collegeName"
@@ -233,7 +256,7 @@ export default function RegisterScreen() {
               />
             </View>
 
-            <View className="mt-3.5">
+            <View className="mt-4">
               <Controller
                 control={control}
                 name="departmentCode"
@@ -252,7 +275,7 @@ export default function RegisterScreen() {
               />
             </View>
 
-            <View className="mt-3.5">
+            <View className="mt-4">
               <Controller
                 control={control}
                 name="academicYear"
@@ -271,7 +294,7 @@ export default function RegisterScreen() {
               />
             </View>
 
-            <View className="mt-3.5">
+            <View className="mt-4">
               <Controller
                 control={control}
                 name="registerNumber"
@@ -290,7 +313,7 @@ export default function RegisterScreen() {
               />
             </View>
 
-            <View className="mt-3.5">
+            <View className="mt-4">
               <Controller
                 control={control}
                 name="email"
@@ -312,7 +335,7 @@ export default function RegisterScreen() {
               />
             </View>
 
-            <View className="mt-3.5">
+            <View className="mt-4">
               <Controller
                 control={control}
                 name="password"
@@ -335,7 +358,7 @@ export default function RegisterScreen() {
               />
             </View>
 
-            <View className="mt-3.5">
+            <View className="mt-4">
               <Controller
                 control={control}
                 name="confirmPassword"
@@ -358,7 +381,7 @@ export default function RegisterScreen() {
               />
             </View>
 
-            <View className="mt-3.5">
+            <View className="mt-4">
               <Controller
                 control={control}
                 name="agreeToTerms"
@@ -382,14 +405,14 @@ export default function RegisterScreen() {
               accessibilityRole="button"
               accessibilityLabel="Create Account"
               accessibilityHint="Submits the registration form"
-              className={`mt-5 h-13 items-center justify-center rounded-full bg-primary ${
+              className={`mt-6 h-14 items-center justify-center rounded-full bg-primary ${
                 isSubmitting ? "opacity-60" : ""
               }`}
             >
               {isSubmitting ? (
                 <ActivityIndicator color={colors.text.inverse} />
               ) : (
-                <Text className="font-poppins-semibold text-sm text-text-inverse">
+                <Text className="font-poppins-semibold text-md text-text-inverse">
                   Create Account
                 </Text>
               )}
@@ -400,16 +423,16 @@ export default function RegisterScreen() {
               accessibilityRole="button"
               accessibilityLabel="Already have an account? Sign In"
               accessibilityHint="Opens the login screen"
-              className="mt-3 h-13 items-center justify-center rounded-full border border-primary bg-surface"
+              className="mt-4 h-14 items-center justify-center rounded-full border border-primary bg-surface"
             >
-              <Text className="font-poppins-semibold text-sm text-primary">
+              <Text className="font-poppins-semibold text-md text-primary">
                 Already have an account? Sign In
               </Text>
             </TouchableOpacity>
           </View>
 
           {/* Divider. */}
-          <View className="mt-5 flex-row items-center gap-3">
+          <View className="mt-6 flex-row items-center gap-3">
             <View className="h-px flex-1 bg-border" />
             <Star
               size={DIVIDER_STAR_SIZE}
@@ -420,20 +443,20 @@ export default function RegisterScreen() {
           </View>
 
           {/* Secure authentication badge. */}
-          <View className="mt-5 flex-row items-center justify-center gap-3 rounded-2xl bg-background border border-border px-4 py-3">
+          <View className="mt-6 flex-row items-center justify-center gap-3 rounded-2xl bg-background border border-border px-4 py-3.5">
             <ShieldCheck size={BADGE_ICON_SIZE} color={colors.success} />
             <View className="items-center">
-              <Text className="font-poppins-semibold text-xs text-text-primary">
+              <Text className="font-poppins-semibold text-sm text-text-primary">
                 Secure authentication
               </Text>
-              <Text className="font-poppins-regular text-[11px] text-text-secondary">
+              <Text className="font-poppins-regular text-sm text-text-secondary">
                 powered by Supabase.
               </Text>
             </View>
           </View>
 
           {/* Legal links. */}
-          <View className="mt-4 flex-row items-center justify-center gap-2">
+          <View className="mt-6 flex-row items-center justify-center gap-2">
             <TouchableOpacity onPress={() => {}} accessibilityRole="link">
               <Text className="font-poppins-regular text-xs text-primary">
                 Terms of Service
@@ -450,11 +473,11 @@ export default function RegisterScreen() {
           </View>
 
           {/* Footer branding. */}
-          <View className="mt-4 items-center">
-            <Text className="font-poppins-regular text-[11px] text-text-secondary">
+          <View className="mt-6 items-center">
+            <Text className="font-poppins-regular text-xs text-text-secondary">
               Powered by
             </Text>
-            <Text className="mt-0.5 font-poppins-semibold text-xs text-primary">
+            <Text className="mt-1 font-poppins-semibold text-sm text-primary">
               R.P. Sarathy Institute of Technology
             </Text>
           </View>

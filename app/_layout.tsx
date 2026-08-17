@@ -4,7 +4,6 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import { Platform, StyleSheet, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -12,9 +11,23 @@ import { AuthProvider } from "@/providers/AuthProvider";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { useAuthStore } from "@/store/authStore";
-import { colors } from "@/theme";
 
+/**
+ * Keeps the native splash screen (configured via the `expo-splash-screen`
+ * plugin in app.json) visible past its default auto-hide point. Must run
+ * at module scope, before RootLayout's first render, so there's no gap
+ * where the native splash could hide itself early.
+ */
 SplashScreen.preventAutoHideAsync();
+
+/**
+ * Loads the Poppins font family required by AGENTS.md Section 4 (Design
+ * System: "Poppins typography"). Rendering is held back until fonts are
+ * ready so no screen ever briefly flashes the system default font. Once
+ * fonts are ready, the native splash is hidden, handing off directly to
+ * the custom SplashScreen component rendered by app/index.tsx.
+ */
+import { Platform, StyleSheet, View } from "react-native";
 
 export default function RootLayout() {
   const [fontsLoaded, fontsError] = useFonts({
@@ -83,7 +96,7 @@ function RootNavigator() {
 const styles = StyleSheet.create({
   nativeContainer: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: "#FFFFFF",
   },
   webOuterBackground: {
     flex: 1,
@@ -98,7 +111,7 @@ const styles = StyleSheet.create({
     width: "100%",
     maxWidth: 1280,
     height: "100%",
-    backgroundColor: colors.background,
+    backgroundColor: "#FFFFFF",
     overflow: "hidden",
     boxShadow: "0 20px 40px -15px rgba(0, 0, 0, 0.4)",
   },

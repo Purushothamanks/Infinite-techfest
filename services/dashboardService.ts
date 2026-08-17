@@ -1,21 +1,61 @@
-import { useAuthStore } from "@/store/authStore";
+import { supabase } from "@/lib/supabase";
 import type { StudentDashboardSummary } from "@/types/dashboard";
 
+/**
+ * Dashboard data service, following AGENTS.md Section 7's clean
+ * architecture rule ("Never let a screen component call Supabase
+ * directly") — the Student Home Dashboard's hook (see
+ * hooks/useStudentDashboard.ts) calls only this module.
+ *
+ * ============================================================================
+ * TEMPORARY MOCK — REPLACE WHEN THE BACKEND SCHEMA EXISTS
+ * ============================================================================
+ * No `profiles`, `events`, `event_registrations`, `payments`, or
+ * `certificates` tables exist in Supabase yet (per AGENTS.md Section 11 —
+ * only Supabase Auth is wired up today, see services/authService.ts and
+ * utils/mapSupabaseUser.ts). Per the task brief's "REAL DATA" rule ("Do
+ * NOT invent a backend API... isolate a temporary typed fallback/mock,
+ * clearly mark it"), `fetchStudentDashboard` below returns a typed mock
+ * instead of querying tables that don't exist.
+ *
+ * `supabase` is still imported and used for `auth.getUser()` so the
+ * greeting genuinely reflects the authenticated session (no fake auth),
+ * proving this module is wired to the real client per AGENTS.md Section 9
+ * ("Supabase" rules) — only the *symposium data* below the auth call is
+ * mocked.
+ *
+ * TODO(backend): once `database/` gains Drizzle schemas for events,
+ * registrations, payments, certificates, and today's schedule, replace
+ * the body of `fetchStudentDashboard` with real Supabase/Drizzle queries
+ * scoped to `user.id`, respecting Row Level Security. The return shape
+ * (`StudentDashboardSummary`) is designed to stay stable across that
+ * swap — only this function's internals should need to change.
+ */
 export async function fetchStudentDashboard(): Promise<StudentDashboardSummary> {
-  const authUser = useAuthStore.getState().user;
+  // Real auth call — confirms a session exists before returning any data.
+  // Screens/hooks never call supabase.auth directly (AGENTS.md Section 7);
+  // this is the one service-layer call that does.
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  // Short simulated delay for smooth skeleton loading
-  await new Promise((resolve) => setTimeout(resolve, 300));
+  if (!user) {
+    throw new Error("No authenticated user found.");
+  }
 
-  return {
-    ...MOCK_DASHBOARD_SUMMARY,
-    paymentStatus: {
-      status: "verified",
-      message: `Welcome, ${authUser?.fullName || "Delegate"}! Your payment is verified.`,
-    },
-  };
+  // Simulates network latency so the dashboard's loading skeleton is
+  // visibly exercised during development. Remove once real queries above
+  // provide natural latency.
+  await new Promise((resolve) => setTimeout(resolve, 600));
+
+  return MOCK_DASHBOARD_SUMMARY;
 }
 
+/**
+ * MOCK DATA — see module doc above. Values intentionally mirror
+ * Designs/Student Module/1. STUDENT HOME DASHBOARD UI DESIGN.png so the
+ * implemented screen can be visually compared against the approved design.
+ */
 const MOCK_DASHBOARD_SUMMARY: StudentDashboardSummary = {
   registrationActive: true,
   paymentVerified: true,

@@ -15,6 +15,14 @@ interface NavItem {
 
 const NAV_ICON_SIZE = 22;
 
+/**
+ * Expo Router's `usePathname()` returns the resolved pathname with route
+ * group segments (e.g. `(student)`) already stripped — so `/(student)/home`
+ * resolves to `/home` at runtime. ROUTES stores the group-qualified path
+ * (needed for `router.push`), so tab-active matching must strip those
+ * group segments before comparing against `usePathname()`, or every tab
+ * silently fails to ever register as active.
+ */
 function stripRouteGroups(path: string): string {
   return path.replace(/\/\([^)]+\)/g, "") || "/";
 }
@@ -27,67 +35,74 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Profile", route: ROUTES.PROFILE, icon: User },
 ];
 
+/**
+ * Shared bottom navigation bar for the Student Module: Home, Events,
+ * Schedule, QR Pass, Profile, per
+ * Designs/Student Module/1. STUDENT HOME DASHBOARD UI DESIGN.png. The
+ * active tab is derived from the current route (via `usePathname`) rather
+ * than a prop, so every Student Module screen can render this component
+ * unmodified and have the correct tab highlighted automatically.
+ *
+ * This is the single Student Module bottom nav — per AGENTS.md Section 7
+ * / the task's "reuse existing navigation" rule, every Student Module
+ * screen (including the placeholder stubs) should render this component
+ * rather than building another one.
+ */
 function StudentBottomNavBase() {
   const pathname = usePathname();
   const insets = useSafeAreaInsets();
 
   return (
     <View
-      style={[
-        {
-          paddingBottom: Math.max(insets.bottom, 10),
-          borderTopWidth: 1,
-          borderTopColor: colors.border,
-          backgroundColor: colors.surface,
-        },
-        shadows.lg,
-      ]}
-      className="rounded-t-3xl pt-3 items-center"
+      style={[{ paddingBottom: Math.max(insets.bottom, 10) }, shadows.lg]}
+      className="flex-row rounded-t-3xl bg-surface pt-3"
     >
-      <View className="flex-row w-full max-w-3xl justify-between px-2">
-        {NAV_ITEMS.map((item) => {
-          const normalizedRoute = stripRouteGroups(item.route);
-          const isActive =
-            pathname === normalizedRoute ||
-            pathname.startsWith(`${normalizedRoute}/`);
-          const Icon = item.icon;
-          const tintColor = isActive ? colors.primary : colors.text.disabled;
-          const isHome = item.route === ROUTES.HOME;
+      {NAV_ITEMS.map((item) => {
+        const normalizedRoute = stripRouteGroups(item.route);
+        const isActive =
+          pathname === normalizedRoute ||
+          pathname.startsWith(`${normalizedRoute}/`);
+        const Icon = item.icon;
+        const tintColor = isActive ? colors.primary : colors.text.disabled;
+        // Only the House glyph reads correctly filled solid (matching the
+        // design's solid navy Home icon) — filling the other line icons
+        // (grid, clock, qr, user) would render them as unrecognizable solid
+        // blobs, so they stay outline and rely on color + stroke weight to
+        // signal the active state instead.
+        const isHome = item.route === ROUTES.HOME;
 
-          return (
-            <TouchableOpacity
-              key={item.route}
-              onPress={() => router.push(item.route)}
-              accessibilityRole="tab"
-              accessibilityState={{ selected: isActive }}
-              accessibilityLabel={item.label}
-              className="flex-1 items-center gap-1.5 py-1"
+        return (
+          <TouchableOpacity
+            key={item.route}
+            onPress={() => router.push(item.route)}
+            accessibilityRole="tab"
+            accessibilityState={{ selected: isActive }}
+            accessibilityLabel={item.label}
+            className="flex-1 items-center gap-1.5 py-1"
+          >
+            <Icon
+              size={NAV_ICON_SIZE}
+              color={tintColor}
+              fill={isActive && isHome ? tintColor : "none"}
+              strokeWidth={isActive ? 2.4 : 2}
+            />
+            <Text
+              className={`font-poppins-medium text-[11px] ${
+                isActive ? "text-primary" : "text-text-disabled"
+              }`}
             >
-              <Icon
-                size={NAV_ICON_SIZE}
-                color={tintColor}
-                fill={isActive && isHome ? tintColor : "none"}
-                strokeWidth={isActive ? 2.4 : 2}
-              />
-              <Text
-                className={`font-poppins-medium text-[11px] ${
-                  isActive ? "text-primary" : "text-text-disabled"
-                }`}
-              >
-                {item.label}
-              </Text>
-              {isActive ? (
-                <View className="h-[3px] w-6 rounded-full bg-primary" />
-              ) : (
-                <View className="h-[3px] w-6" />
-              )}
-            </TouchableOpacity>
-          );
-        })}
-      </View>
+              {item.label}
+            </Text>
+            {isActive ? (
+              <View className="h-[3px] w-6 rounded-full bg-primary" />
+            ) : (
+              <View className="h-[3px] w-6" />
+            )}
+          </TouchableOpacity>
+        );
+      })}
     </View>
   );
-
 }
 
 export const StudentBottomNav = memo(StudentBottomNavBase);

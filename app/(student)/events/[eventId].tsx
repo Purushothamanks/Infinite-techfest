@@ -1,8 +1,23 @@
-import { EventDetailsScreen } from "@/components/events/EventDetailsScreen";
+import { useLocalSearchParams } from "expo-router";
+import { CalendarDays } from "lucide-react-native";
+
+import { ComingSoonScreen } from "@/components/dashboard/ComingSoonScreen";
 
 /**
- * Student Event Details Route.
+ * Placeholder stub for Event Details (see
+ * constants/navigation.ts eventDetailsRoute() doc). Replace with the real
+ * Event Details screen once its design exists. `eventId` is read but not
+ * yet used — kept here so the dynamic segment resolves and future
+ * implementation can fetch the event by id.
  */
-export default function EventDetailsRoute() {
-  return <EventDetailsScreen />;
+export default function EventDetailsScreen() {
+  useLocalSearchParams<{ eventId: string }>();
+
+  return (
+    <ComingSoonScreen
+      title="Event Details"
+      description="Full event details will appear here soon."
+      icon={CalendarDays}
+    />
+  );
 }
