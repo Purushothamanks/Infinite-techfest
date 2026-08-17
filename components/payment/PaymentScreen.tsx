@@ -26,6 +26,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { StudentBottomNav } from "@/components/dashboard/StudentBottomNav";
 import { fetchPaymentDetails, submitPaymentProof } from "@/services/paymentService";
+import { useProcessStore } from "@/store/processStore";
 import { colors, shadows } from "@/theme";
 import type { PaymentDetails } from "@/services/paymentService";
 
@@ -60,10 +61,16 @@ export function PaymentScreen() {
     setIsSubmitting(true);
     const res = await submitPaymentProof(utrInput);
     setIsSubmitting(false);
-    Alert.alert("Success", res.message);
-    setDetails((prev) => (prev ? { ...prev, status: "pending", utrNumber: utrInput } : null));
+
+    // Complete process: activates Registration, Payment Verified, QR Pass Ready ("You're all set!")
+    useProcessStore.getState().completeFullProcess();
+
+    Alert.alert("Payment Verified! 🎉", "You're all set! Your symposium journey is ready to begin.");
+    setDetails((prev) => (prev ? { ...prev, status: "verified", utrNumber: utrInput } : null));
     setActiveTab("status");
   };
+
+
 
   if (loading || !details) {
     return (

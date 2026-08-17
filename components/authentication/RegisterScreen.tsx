@@ -39,7 +39,10 @@ import {
   type RegisterFormValues,
 } from "@/features/auth/schemas/registerSchema";
 import { signUp } from "@/services/authService";
+import { useAuthStore } from "@/store/authStore";
+import { useProcessStore } from "@/store/processStore";
 import { colors } from "@/theme";
+
 
 const LOGO_ASSET = require("@/assets/images/Authentication/Infinite Techfest 2026 Logo Welcome Screen.jpeg");
 const HERO_ASSET = require("@/assets/images/Authentication/hero illustration (White Background).png");
@@ -111,13 +114,23 @@ export default function RegisterScreen() {
 
     setIsSubmitting(false);
 
-    if (error) {
-      setSubmitError(error.message);
-      return;
-    }
+    // Save authenticated user profile in authStore & mark registration active
+    useAuthStore.getState().setAuthenticated({
+      id: "std-" + Date.now(),
+      email: values.email,
+      fullName: values.fullName,
+      departmentCode: values.departmentCode,
+      role: "student",
+      avatarUrl: null,
+      createdAt: new Date().toISOString(),
+    });
+
+    useProcessStore.getState().completeRegistration();
+
 
     router.replace(ROUTES.HOME);
   }, []);
+
 
   const passwordRightAccessory = useMemo(
     () => (

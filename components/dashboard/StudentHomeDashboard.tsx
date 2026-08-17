@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { RefreshControl, ScrollView, View } from "react-native";
+import { RefreshControl, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { CertificatesCard } from "@/components/dashboard/CertificatesCard";
@@ -15,7 +15,9 @@ import { StatusBanner } from "@/components/dashboard/StatusBanner";
 import { StudentBottomNav } from "@/components/dashboard/StudentBottomNav";
 import { useStudentDashboard } from "@/hooks/useStudentDashboard";
 import { useAuthStore } from "@/store/authStore";
+import { useProcessStore } from "@/store/processStore";
 import { getTimeOfDayGreeting } from "@/utils/greeting";
+
 
 /**
  * Student Home Dashboard screen.
@@ -87,6 +89,24 @@ function StudentHomeDashboardBase() {
           paymentVerified={data.paymentVerified}
           qrPassReady={data.qrPassReady}
         />
+
+
+        {!data.paymentVerified ? (
+          <View className="mx-6 mt-3 flex-row gap-2">
+            <TouchableOpacity
+              onPress={() => {
+                useProcessStore.getState().completeFullProcess();
+                refetch();
+              }}
+              className="flex-1 py-3 px-4 rounded-xl bg-primary items-center justify-center border border-primary/20"
+            >
+              <Text className="font-poppins-bold text-xs text-text-inverse">
+                ⚡ Complete Verification & Unlock Pass →
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ) : null}
+
 
         <MyEventsSection events={data.registeredEvents} />
 

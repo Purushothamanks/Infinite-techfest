@@ -33,10 +33,24 @@ function StatusBannerBase({
   paymentVerified,
   qrPassReady,
 }: StatusBannerProps) {
+  const isAllSet = registrationActive && paymentVerified && qrPassReady;
+
   const checklist: { label: string; value: string; done: boolean }[] = [
-    { label: "Registration", value: "Active", done: registrationActive },
-    { label: "Payment", value: "Verified", done: paymentVerified },
-    { label: "QR Pass", value: "Ready", done: qrPassReady },
+    {
+      label: "Registration",
+      value: registrationActive ? "Active" : "Pending",
+      done: registrationActive,
+    },
+    {
+      label: "Payment",
+      value: paymentVerified ? "Verified" : "Pending",
+      done: paymentVerified,
+    },
+    {
+      label: "QR Pass",
+      value: qrPassReady ? "Ready" : "Locked",
+      done: qrPassReady,
+    },
   ];
 
   return (
@@ -44,10 +58,12 @@ function StatusBannerBase({
       <View className="flex-row items-center justify-between">
         <View className="flex-1 pr-3">
           <Text className="font-poppins-bold text-lg text-primary">
-            You&apos;re all set! 🎉
+            {isAllSet ? "You're all set! 🎉" : "Symposium Onboarding 🚀"}
           </Text>
-          <Text className="mt-1 font-poppins-regular text-xs text-text-secondary">
-            Your symposium journey is ready to begin.
+          <Text className="mt-1 font-poppins-regular text-xs text-text-secondary leading-4">
+            {isAllSet
+              ? "Your symposium journey is ready to begin."
+              : "Complete registration & payment verification to activate your pass."}
           </Text>
         </View>
         <ConfettiAccent size={80} />
@@ -61,12 +77,12 @@ function StatusBannerBase({
           >
             <View
               className={`mt-0.5 h-5 w-5 items-center justify-center rounded-full ${
-                item.done ? "bg-success" : "bg-border"
+                item.done ? "bg-success" : "bg-amber-400"
               }`}
             >
               <CheckCircle2
                 size={CHECK_ICON_SIZE}
-                color={item.done ? colors.text.inverse : colors.text.disabled}
+                color={colors.text.inverse}
               />
             </View>
             <View className="flex-1">
@@ -77,7 +93,9 @@ function StatusBannerBase({
                 {item.label}
               </Text>
               <Text
-                className="font-poppins-semibold text-xs text-text-primary"
+                className={`font-poppins-semibold text-xs ${
+                  item.done ? "text-text-primary" : "text-amber-700"
+                }`}
                 numberOfLines={1}
               >
                 {item.value}
@@ -91,3 +109,4 @@ function StatusBannerBase({
 }
 
 export const StatusBanner = memo(StatusBannerBase);
+

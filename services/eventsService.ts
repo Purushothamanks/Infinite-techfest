@@ -1,3 +1,4 @@
+import { useProcessStore } from "@/store/processStore";
 import type { EventCategory, EventDetail } from "@/types/events";
 
 export const MOCK_EVENTS: EventDetail[] = [
@@ -231,7 +232,16 @@ export const MOCK_EVENTS: EventDetail[] = [
 
 export async function fetchEvents(category: EventCategory = "All", searchQuery: string = ""): Promise<EventDetail[]> {
   await new Promise((res) => setTimeout(res, 200));
-  let filtered = MOCK_EVENTS;
+  const { isPaymentVerified } = useProcessStore.getState();
+
+  let filtered = MOCK_EVENTS.map((e) => ({
+    ...e,
+    registrationStatus: isPaymentVerified
+      ? e.registrationStatus
+      : ("not_registered" as const),
+    isRegistered: isPaymentVerified ? e.isRegistered : false,
+  }));
+
   if (category !== "All") {
     filtered = filtered.filter((e) => e.category === category);
   }
@@ -246,5 +256,15 @@ export async function fetchEvents(category: EventCategory = "All", searchQuery: 
 
 export async function fetchEventById(id: string): Promise<EventDetail | null> {
   await new Promise((res) => setTimeout(res, 150));
-  return MOCK_EVENTS.find((e) => e.id === id) || null;
+  const { isPaymentVerified } = useProcessStore.getState();
+  const found = MOCK_EVENTS.find((e) => e.id === id);
+  if (!found) return null;
+  return {
+    ...found,
+    registrationStatus: isPaymentVerified
+      ? found.registrationStatus
+      : ("not_registered" as const),
+    isRegistered: isPaymentVerified ? found.isRegistered : false,
+  };
 }
+
