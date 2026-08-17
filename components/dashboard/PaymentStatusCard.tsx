@@ -69,9 +69,9 @@ function PaymentStatusCardBase({ summary }: PaymentStatusCardProps) {
 
   return (
     <View className="relative flex-1 overflow-hidden rounded-2xl border border-border bg-surface p-4">
-      {/* Transparent Security Shield & Lock Watermark Centered in Background */}
+      {/* Transparent Security Shield & Lock Watermark Centered & Shifted Lower Down in Background */}
       <View
-        className="absolute inset-0 items-center justify-center opacity-10"
+        className="absolute inset-x-0 bottom-0.5 items-center justify-center opacity-10"
         style={{ pointerEvents: "none" }}
         importantForAccessibility="no-hide-descendants"
       >
@@ -88,6 +88,7 @@ function PaymentStatusCardBase({ summary }: PaymentStatusCardProps) {
           />
         </View>
       </View>
+
 
 
       {/* Top Header Row with Title */}
