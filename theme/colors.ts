@@ -24,7 +24,6 @@ export const colors = {
   warning: "#F59E0B",
   error: "#EF4444",
   info: "#3B82F6",
-  royalblue: "#2563EB",
 } as const;
 
 export type Colors = typeof colors;

@@ -73,14 +73,15 @@ function StudentHomeDashboardBase() {
       >
         <DashboardHeader
           avatarUrl={authUser?.avatarUrl ?? null}
-          fullName={authUser?.fullName ?? ""}
+          fullName={authUser?.fullName ?? "K. S. Purushothaman"}
           unreadNotificationCount={data.unreadNotificationCount}
         />
 
         <DashboardGreeting
           timeOfDayGreeting={getTimeOfDayGreeting()}
-          fullName={authUser?.fullName ?? ""}
+          fullName={authUser?.fullName ?? "K. S. Purushothaman"}
         />
+
 
         <StatusBanner
           registrationActive={data.registrationActive}
