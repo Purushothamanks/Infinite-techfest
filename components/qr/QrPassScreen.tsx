@@ -22,23 +22,26 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { StudentBottomNav } from "@/components/dashboard/StudentBottomNav";
 import { useAuthStore } from "@/store/authStore";
+import { useProcessStore } from "@/store/processStore";
 import { colors, shadows } from "@/theme";
 
 const RPSIT_LOGO = require("@/assets/images/RPSIT/RPSIT Logo.png");
+
 
 export function QrPassScreen() {
   const { width } = useWindowDimensions();
   const passValue = "ITF2026-PASS-8921-RPSIT";
   const user = useAuthStore((state) => state.user);
+  const { isPaymentVerified, completeFullProcess } = useProcessStore();
 
   // Dynamically calculate QR size to fit inside card on small mobile screens
   const dynamicQrSize = Math.min(160, Math.max(120, width - 140));
 
   const [registeredEvents] = useState([
-    { title: "CodeCraft", location: "Lab 404", status: "Verified" },
-    { title: "AI Innovators", location: "Seminar Hall", status: "Verified" },
-    { title: "Tech Quiz", location: "Auditorium", status: "Payment Pending" },
-    { title: "RoboWars", location: "Ground Arena", status: "Verified" },
+    { title: "CodeCraft", location: "Lab 404", status: isPaymentVerified ? "Verified" : "Pending" },
+    { title: "AI Innovators", location: "Seminar Hall", status: isPaymentVerified ? "Verified" : "Pending" },
+    { title: "Tech Quiz", location: "Auditorium", status: "Pending" },
+    { title: "RoboWars", location: "Ground Arena", status: isPaymentVerified ? "Verified" : "Pending" },
   ]);
 
   return (
@@ -84,32 +87,56 @@ export function QrPassScreen() {
                 INFINITE TECHFEST 2026
               </Text>
               <View className="mt-2 flex-row items-center gap-1.5 rounded-full bg-emerald-500/20 px-3 py-1 border border-emerald-400/30">
-                <ShieldCheck size={14} color="#34d399" />
-                <Text className="font-poppins-semibold text-xs text-emerald-300">
-                  OFFICIAL DELEGATE PASS
+                <ShieldCheck size={14} color={isPaymentVerified ? "#34d399" : "#f59e0b"} />
+                <Text className={`font-poppins-semibold text-xs ${isPaymentVerified ? "text-emerald-300" : "text-amber-300"}`}>
+                  {isPaymentVerified ? "OFFICIAL DELEGATE PASS" : "PASS PENDING VERIFICATION"}
                 </Text>
               </View>
             </View>
 
             {/* QR Code Graphic Container */}
             <View className="items-center justify-center bg-white p-5 w-full">
-              <View className="rounded-2xl border-4 border-primary/20 p-2.5 bg-white max-w-full overflow-hidden items-center justify-center">
-                <QRCode
-                  value={passValue}
-                  size={dynamicQrSize}
-                  color={colors.primary}
-                  backgroundColor="#FFFFFF"
-                />
-              </View>
+              {isPaymentVerified ? (
+                <>
+                  <View className="rounded-2xl border-4 border-primary/20 p-2.5 bg-white max-w-full overflow-hidden items-center justify-center">
+                    <QRCode
+                      value={passValue}
+                      size={dynamicQrSize}
+                      color={colors.primary}
+                      backgroundColor="#FFFFFF"
+                    />
+                  </View>
 
-              <Text className="mt-3 font-poppins-bold text-base text-primary tracking-wider text-center">
-                {passValue}
-              </Text>
-              <Text className="font-poppins-regular text-xs text-text-secondary text-center">
-                Present this QR at Gate & Event Check-in
-              </Text>
+                  <Text className="mt-3 font-poppins-bold text-base text-primary tracking-wider text-center">
+                    {passValue}
+                  </Text>
+                  <Text className="font-poppins-regular text-xs text-text-secondary text-center">
+                    Present this QR at Gate & Event Check-in
+                  </Text>
+                </>
+              ) : (
+                <View className="py-6 px-4 items-center justify-center">
+                  <View className="h-16 w-16 items-center justify-center rounded-full bg-amber-100 mb-3 border border-amber-300">
+                    <QrIcon size={32} color="#d97706" />
+                  </View>
+                  <Text className="font-poppins-bold text-base text-primary text-center">
+                    QR Pass Locked
+                  </Text>
+                  <Text className="mt-1 max-w-xs font-poppins-regular text-xs text-text-secondary text-center leading-4">
+                    Complete your registration & payment verification to unlock your official scannable entry QR pass.
+                  </Text>
+
+                  <TouchableOpacity
+                    onPress={completeFullProcess}
+                    className="mt-4 px-5 py-2.5 rounded-xl bg-primary items-center justify-center"
+                  >
+                    <Text className="font-poppins-semibold text-xs text-text-inverse">
+                      ⚡ Complete Verification & Unlock Pass
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
-
 
             {/* Ticket Dashed Separator */}
             <View className="flex-row items-center justify-between bg-white px-2">
@@ -134,7 +161,7 @@ export function QrPassScreen() {
                     Registration ID
                   </Text>
                   <Text className="font-poppins-bold text-sm text-accent">
-                    RPSIT-2026-8921
+                    {isPaymentVerified ? "RPSIT-2026-8921" : "PENDING-REG"}
                   </Text>
                 </View>
               </View>
@@ -153,15 +180,27 @@ export function QrPassScreen() {
                     Pass Status
                   </Text>
                   <View className="flex-row items-center gap-1">
-                    <CheckCircle2 size={14} color="#059669" />
-                    <Text className="font-poppins-semibold text-xs text-emerald-600">
-                      Active
-                    </Text>
+                    {isPaymentVerified ? (
+                      <>
+                        <CheckCircle2 size={14} color="#059669" />
+                        <Text className="font-poppins-semibold text-xs text-emerald-600">
+                          Active
+                        </Text>
+                      </>
+                    ) : (
+                      <>
+                        <Clock size={14} color="#d97706" />
+                        <Text className="font-poppins-semibold text-xs text-amber-600">
+                          Pending
+                        </Text>
+                      </>
+                    )}
                   </View>
                 </View>
               </View>
             </View>
           </View>
+
 
           {/* Action Buttons */}
           <View className="mt-4 flex-row gap-3">

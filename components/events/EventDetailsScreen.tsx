@@ -30,6 +30,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { ROUTES } from "@/constants/navigation";
 import { fetchEventById } from "@/services/eventsService";
+import { useProcessStore } from "@/store/processStore";
 import { colors, shadows } from "@/theme";
 import type { EventDetail } from "@/types/events";
 
@@ -74,6 +75,8 @@ export function EventDetailsScreen() {
     setIsSubmitting(false);
     setRegisterModalVisible(false);
 
+    useProcessStore.getState().completeRegistration();
+
     if (event) {
       setEvent({
         ...event,
@@ -81,6 +84,8 @@ export function EventDetailsScreen() {
         registrationStatus: event.registrationFee > 0 ? "pending_payment" : "registered",
       });
     }
+
+
 
     if (event && event.registrationFee > 0) {
       Alert.alert(
