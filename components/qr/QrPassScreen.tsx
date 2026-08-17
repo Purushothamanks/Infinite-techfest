@@ -6,7 +6,6 @@ import {
   QrCode as QrIcon,
   Share2,
   ShieldCheck,
-  Sparkles,
 } from "lucide-react-native";
 import React, { useState } from "react";
 import {
@@ -15,6 +14,7 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
+  useWindowDimensions,
   View,
 } from "react-native";
 import QRCode from "react-native-qrcode-svg";
@@ -27,8 +27,12 @@ import { colors, shadows } from "@/theme";
 const RPSIT_LOGO = require("@/assets/images/RPSIT/RPSIT Logo.png");
 
 export function QrPassScreen() {
-  const user = useAuthStore((state) => state.user);
+  const { width } = useWindowDimensions();
   const passValue = "ITF2026-PASS-8921-RPSIT";
+  const user = useAuthStore((state) => state.user);
+
+  // Dynamically calculate QR size to fit inside card on small mobile screens
+  const dynamicQrSize = Math.min(160, Math.max(120, width - 140));
 
   const [registeredEvents] = useState([
     { title: "CodeCraft", location: "Lab 404", status: "Verified" },
@@ -41,7 +45,7 @@ export function QrPassScreen() {
     <SafeAreaView className="flex-1 bg-background" edges={["top"]}>
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         {/* Header */}
-        <View className="px-6 pt-3 pb-2">
+        <View className="px-6 pt-3 pb-2 max-w-4xl mx-auto w-full">
           <View className="flex-row items-center justify-between">
             <View>
               <Text className="font-poppins-bold text-2xl text-primary">
@@ -58,23 +62,25 @@ export function QrPassScreen() {
         </View>
 
         {/* QR Pass Card (Ticket View) */}
-        <View className="px-6 py-2">
+        <View className="px-6 py-2 max-w-4xl mx-auto w-full">
           <View
             style={shadows.lg}
-            className="overflow-hidden rounded-3xl border border-border bg-surface"
+            className="overflow-hidden rounded-3xl border border-border bg-surface w-full"
           >
             {/* Top Ticket Header */}
-            <View className="bg-primary p-5 items-center">
-              <Image
-                source={RPSIT_LOGO}
-                resizeMode="contain"
-                className="h-10 w-32 mb-1"
-                accessibilityLabel="RPSIT Institution Logo"
-              />
-              <Text className="font-poppins-semibold text-xs text-accent uppercase tracking-widest">
+            <View className="bg-primary p-5 items-center w-full">
+              <View className="h-10 w-36 items-center justify-center mb-1 overflow-hidden">
+                <Image
+                  source={RPSIT_LOGO}
+                  resizeMode="contain"
+                  className="h-full w-full"
+                  accessibilityLabel="RPSIT Institution Logo"
+                />
+              </View>
+              <Text className="font-poppins-semibold text-xs text-accent uppercase tracking-widest text-center">
                 R.P. Sarathy Institute of Technology
               </Text>
-              <Text className="mt-1 font-poppins-bold text-xl text-text-inverse">
+              <Text className="mt-1 font-poppins-bold text-xl text-text-inverse text-center">
                 INFINITE TECHFEST 2026
               </Text>
               <View className="mt-2 flex-row items-center gap-1.5 rounded-full bg-emerald-500/20 px-3 py-1 border border-emerald-400/30">
@@ -86,23 +92,24 @@ export function QrPassScreen() {
             </View>
 
             {/* QR Code Graphic Container */}
-            <View className="items-center justify-center bg-white p-6">
-              <View className="rounded-2xl border-4 border-primary/20 p-3 bg-white">
+            <View className="items-center justify-center bg-white p-5 w-full">
+              <View className="rounded-2xl border-4 border-primary/20 p-2.5 bg-white max-w-full overflow-hidden items-center justify-center">
                 <QRCode
                   value={passValue}
-                  size={190}
+                  size={dynamicQrSize}
                   color={colors.primary}
                   backgroundColor="#FFFFFF"
                 />
               </View>
 
-              <Text className="mt-4 font-poppins-bold text-base text-primary tracking-wider">
+              <Text className="mt-3 font-poppins-bold text-base text-primary tracking-wider text-center">
                 {passValue}
               </Text>
-              <Text className="font-poppins-regular text-xs text-text-secondary">
+              <Text className="font-poppins-regular text-xs text-text-secondary text-center">
                 Present this QR at Gate & Event Check-in
               </Text>
             </View>
+
 
             {/* Ticket Dashed Separator */}
             <View className="flex-row items-center justify-between bg-white px-2">
@@ -187,7 +194,7 @@ export function QrPassScreen() {
         </View>
 
         {/* Registered Events Entry Checklist */}
-        <View className="px-6 py-4">
+        <View className="px-6 py-4 max-w-4xl mx-auto w-full">
           <Text className="font-poppins-bold text-lg text-primary">
             Event Entry Status
           </Text>
@@ -240,13 +247,14 @@ export function QrPassScreen() {
         </View>
 
         {/* Instructions */}
-        <View className="mx-6 mb-8 rounded-2xl border border-border bg-surface p-4">
+        <View className="mx-6 mb-8 max-w-4xl mx-auto w-full rounded-2xl border border-border bg-surface p-4">
           <View className="flex-row items-center gap-2">
             <AlertCircle size={18} color={colors.primary} />
             <Text className="font-poppins-bold text-sm text-primary">
               Gate Entry Guidelines
             </Text>
           </View>
+
           <Text className="mt-1.5 font-poppins-regular text-xs text-text-secondary leading-5">
             1. Keep your physical college ID card ready along with this digital pass.{"\n"}
             2. High brightness on your phone screen speeds up scanner verification.{"\n"}
