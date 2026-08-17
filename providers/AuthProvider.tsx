@@ -54,13 +54,30 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // 1 & 2: resolve persisted session, then keep it in sync.
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        setAuthenticated(mapSupabaseUser(session.user));
-      } else {
+    let isSubscribed = true;
+
+    const timeoutId = setTimeout(() => {
+      if (isSubscribed && useAuthStore.getState().status === "loading") {
         setUnauthenticated();
       }
-    });
+    }, 800);
+
+    supabase.auth
+      .getSession()
+      .then(({ data: { session } }) => {
+        clearTimeout(timeoutId);
+        if (!isSubscribed) return;
+        if (session) {
+          setAuthenticated(mapSupabaseUser(session.user));
+        } else {
+          setUnauthenticated();
+        }
+      })
+      .catch(() => {
+        clearTimeout(timeoutId);
+        if (isSubscribed) setUnauthenticated();
+      });
+
 
     const { data: subscription } = supabase.auth.onAuthStateChange(
       (event, session) => {

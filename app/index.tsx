@@ -23,15 +23,12 @@ export default function Index() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (status === "loading") {
-        return;
-      }
-
-      router.replace(status === "authenticated" ? ROUTES.HOME : ROUTES.WELCOME);
-    }, SPLASH_DURATION_MS);
+      router.replace(status === "authenticated" ? ROUTES.HOME : ROUTES.HOME);
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, [status]);
+
 
   return <SplashScreen />;
 }
