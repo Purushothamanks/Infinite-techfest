@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { memo } from "react";
 import { RefreshControl, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,10 +14,12 @@ import { PaymentStatusCard } from "@/components/dashboard/PaymentStatusCard";
 import { ScheduleSection } from "@/components/dashboard/ScheduleSection";
 import { StatusBanner } from "@/components/dashboard/StatusBanner";
 import { StudentBottomNav } from "@/components/dashboard/StudentBottomNav";
+import { ROUTES } from "@/constants/navigation";
 import { useStudentDashboard } from "@/hooks/useStudentDashboard";
 import { useAuthStore } from "@/store/authStore";
 import { useProcessStore } from "@/store/processStore";
 import { getTimeOfDayGreeting } from "@/utils/greeting";
+
 
 
 /**
@@ -90,22 +93,43 @@ function StudentHomeDashboardBase() {
           qrPassReady={data.qrPassReady}
         />
 
-
         {!data.paymentVerified ? (
+
           <View className="mx-6 mt-3 flex-row gap-2">
-            <TouchableOpacity
-              onPress={() => {
-                useProcessStore.getState().completeFullProcess();
-                refetch();
-              }}
-              className="flex-1 py-3 px-4 rounded-xl bg-primary items-center justify-center border border-primary/20"
-            >
-              <Text className="font-poppins-bold text-xs text-text-inverse">
-                ⚡ Complete Verification & Unlock Pass →
-              </Text>
-            </TouchableOpacity>
+            {!data.registrationActive ? (
+              <TouchableOpacity
+                onPress={() => router.push(ROUTES.REGISTER)}
+                className="flex-1 py-3 px-4 rounded-xl bg-primary items-center justify-center border border-primary/20"
+              >
+                <Text className="font-poppins-bold text-xs text-text-inverse">
+                  📝 Step 1: Complete Registration →
+                </Text>
+              </TouchableOpacity>
+            ) : !useProcessStore.getState().isPaymentSubmitted ? (
+              <TouchableOpacity
+                onPress={() => router.push(ROUTES.PAYMENT_STATUS)}
+                className="flex-1 py-3 px-4 rounded-xl bg-amber-600 items-center justify-center border border-amber-500/20"
+              >
+                <Text className="font-poppins-bold text-xs text-text-inverse">
+                  💳 Step 2: Submit Payment Proof (UTR) →
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={() => {
+                  useProcessStore.getState().approvePaymentByAdmin();
+                  refetch();
+                }}
+                className="flex-1 py-3 px-4 rounded-xl bg-emerald-600 items-center justify-center border border-emerald-500/20"
+              >
+                <Text className="font-poppins-bold text-xs text-text-inverse">
+                  ✅ Step 3: Accounts Desk Approve Proof →
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
         ) : null}
+
 
 
         <MyEventsSection events={data.registeredEvents} />

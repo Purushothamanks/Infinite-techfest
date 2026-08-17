@@ -6,13 +6,17 @@ interface ProcessState {
   isPaymentVerified: boolean;
   completeRegistration: () => void;
   submitPaymentProof: () => void;
+  approvePaymentByAdmin: () => void;
   completeFullProcess: () => void;
   resetProcess: () => void;
 }
 
 /**
- * Manages the step-by-step student onboarding process state:
- * Fresh User -> Register -> Upload Payment Proof -> Verification Complete ("You're all set!").
+ * Manages the realistic step-by-step student onboarding process state:
+ * 1. Fresh Unregistered User ->
+ * 2. Complete Registration (Registration Active) ->
+ * 3. Submit Payment UTR Proof (Payment Pending ⏳) ->
+ * 4. Accounts Desk Approval (Payment Verified 🎉 -> "You're all set!").
  */
 export const useProcessStore = create<ProcessState>((set) => ({
   isRegistered: false,
@@ -28,6 +32,14 @@ export const useProcessStore = create<ProcessState>((set) => ({
     set({
       isRegistered: true,
       isPaymentSubmitted: true,
+      isPaymentVerified: false,
+    }),
+
+  approvePaymentByAdmin: () =>
+    set({
+      isRegistered: true,
+      isPaymentSubmitted: true,
+      isPaymentVerified: true,
     }),
 
   completeFullProcess: () =>
@@ -44,3 +56,4 @@ export const useProcessStore = create<ProcessState>((set) => ({
       isPaymentVerified: false,
     }),
 }));
+
