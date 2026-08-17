@@ -42,49 +42,52 @@ function StudentBottomNavBase() {
         },
         shadows.lg,
       ]}
-      className="flex-row rounded-t-3xl pt-3"
+      className="rounded-t-3xl pt-3 items-center"
     >
-      {NAV_ITEMS.map((item) => {
-        const normalizedRoute = stripRouteGroups(item.route);
-        const isActive =
-          pathname === normalizedRoute ||
-          pathname.startsWith(`${normalizedRoute}/`);
-        const Icon = item.icon;
-        const tintColor = isActive ? colors.primary : colors.text.disabled;
-        const isHome = item.route === ROUTES.HOME;
+      <View className="flex-row w-full max-w-3xl justify-between px-2">
+        {NAV_ITEMS.map((item) => {
+          const normalizedRoute = stripRouteGroups(item.route);
+          const isActive =
+            pathname === normalizedRoute ||
+            pathname.startsWith(`${normalizedRoute}/`);
+          const Icon = item.icon;
+          const tintColor = isActive ? colors.primary : colors.text.disabled;
+          const isHome = item.route === ROUTES.HOME;
 
-        return (
-          <TouchableOpacity
-            key={item.route}
-            onPress={() => router.push(item.route)}
-            accessibilityRole="tab"
-            accessibilityState={{ selected: isActive }}
-            accessibilityLabel={item.label}
-            className="flex-1 items-center gap-1.5 py-1"
-          >
-            <Icon
-              size={NAV_ICON_SIZE}
-              color={tintColor}
-              fill={isActive && isHome ? tintColor : "none"}
-              strokeWidth={isActive ? 2.4 : 2}
-            />
-            <Text
-              className={`font-poppins-medium text-[11px] ${
-                isActive ? "text-primary" : "text-text-disabled"
-              }`}
+          return (
+            <TouchableOpacity
+              key={item.route}
+              onPress={() => router.push(item.route)}
+              accessibilityRole="tab"
+              accessibilityState={{ selected: isActive }}
+              accessibilityLabel={item.label}
+              className="flex-1 items-center gap-1.5 py-1"
             >
-              {item.label}
-            </Text>
-            {isActive ? (
-              <View className="h-[3px] w-6 rounded-full bg-primary" />
-            ) : (
-              <View className="h-[3px] w-6" />
-            )}
-          </TouchableOpacity>
-        );
-      })}
+              <Icon
+                size={NAV_ICON_SIZE}
+                color={tintColor}
+                fill={isActive && isHome ? tintColor : "none"}
+                strokeWidth={isActive ? 2.4 : 2}
+              />
+              <Text
+                className={`font-poppins-medium text-[11px] ${
+                  isActive ? "text-primary" : "text-text-disabled"
+                }`}
+              >
+                {item.label}
+              </Text>
+              {isActive ? (
+                <View className="h-[3px] w-6 rounded-full bg-primary" />
+              ) : (
+                <View className="h-[3px] w-6" />
+              )}
+            </TouchableOpacity>
+          );
+        })}
+      </View>
     </View>
   );
+
 }
 
 export const StudentBottomNav = memo(StudentBottomNavBase);

@@ -65,7 +65,7 @@ function StudentHomeDashboardBase() {
     <SafeAreaView className="flex-1 bg-background" edges={["top"]}>
       <ScrollView
         className="flex-1"
-        contentContainerClassName="pb-8"
+        contentContainerClassName="pb-8 max-w-5xl mx-auto w-full px-2 sm:px-4"
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
@@ -105,6 +105,7 @@ function StudentHomeDashboardBase() {
 
       <StudentBottomNav />
     </SafeAreaView>
+
   );
 }
 

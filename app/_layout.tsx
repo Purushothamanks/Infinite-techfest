@@ -58,7 +58,7 @@ function MobileViewportWrapper({ children }: { children: React.ReactNode }) {
 
   return (
     <View style={styles.webOuterBackground}>
-      <View style={styles.webPhoneFrame}>{children}</View>
+      <View style={styles.webResponsiveFrame}>{children}</View>
     </View>
   );
 }
@@ -89,19 +89,18 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
-    backgroundColor: "#0F172A",
+    backgroundColor: "#0A1128",
     alignItems: "center",
     justifyContent: "center",
   },
-  webPhoneFrame: {
+  webResponsiveFrame: {
     flex: 1,
     width: "100%",
-    maxWidth: 440,
+    maxWidth: 1280,
     height: "100%",
-    maxHeight: 900,
     backgroundColor: colors.background,
-    borderRadius: 0, // Clean straight screen edges
     overflow: "hidden",
-    boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
+    boxShadow: "0 20px 40px -15px rgba(0, 0, 0, 0.4)",
   },
 });
+

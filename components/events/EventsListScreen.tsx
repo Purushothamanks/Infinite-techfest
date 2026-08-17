@@ -165,49 +165,51 @@ export function EventsListScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-background" edges={["top"]}>
-      <View className="px-6 pt-3 pb-2">
-        <View className="flex-row items-center justify-between">
-          <View>
-            <Text className="font-poppins-bold text-2xl text-primary">
-              Events & Contests
-            </Text>
-            <Text className="font-poppins-regular text-xs text-text-secondary">
-              Infinite Techfest 2026 • RPSIT
-            </Text>
+      <View className="flex-1 max-w-5xl mx-auto w-full">
+        <View className="px-6 pt-3 pb-2">
+          <View className="flex-row items-center justify-between">
+            <View>
+              <Text className="font-poppins-bold text-2xl text-primary">
+                Events & Contests
+              </Text>
+              <Text className="font-poppins-regular text-xs text-text-secondary">
+                Infinite Techfest 2026 • RPSIT
+              </Text>
+            </View>
+            <View className="h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+              <Sparkles size={20} color={colors.primary} />
+            </View>
           </View>
-          <View className="h-10 w-10 items-center justify-center rounded-full bg-primary/10">
-            <Sparkles size={20} color={colors.primary} />
+
+          {/* Search Bar */}
+          <View className="mt-4 flex-row items-center rounded-xl border border-border bg-surface px-3.5 py-2.5">
+            <Search size={18} color={colors.text.disabled} />
+            <TextInput
+              placeholder="Search events, workshops, hackathons..."
+              placeholderTextColor={colors.text.disabled}
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              className="ml-2.5 flex-1 font-poppins-regular text-sm text-text-primary p-0"
+            />
+            {searchQuery ? (
+              <TouchableOpacity onPress={() => setSearchQuery("")}>
+                <X size={18} color={colors.text.disabled} />
+              </TouchableOpacity>
+            ) : null}
           </View>
         </View>
 
-        {/* Search Bar */}
-        <View className="mt-4 flex-row items-center rounded-xl border border-border bg-surface px-3.5 py-2.5">
-          <Search size={18} color={colors.text.disabled} />
-          <TextInput
-            placeholder="Search events, workshops, hackathons..."
-            placeholderTextColor={colors.text.disabled}
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            className="ml-2.5 flex-1 font-poppins-regular text-sm text-text-primary p-0"
-          />
-          {searchQuery ? (
-            <TouchableOpacity onPress={() => setSearchQuery("")}>
-              <X size={18} color={colors.text.disabled} />
-            </TouchableOpacity>
-          ) : null}
-        </View>
-      </View>
+        {/* Category Pills Header */}
+        <View className="py-2">
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerClassName="px-6 gap-2"
+          >
+            {CATEGORIES.map((cat) => {
+              const isSelected = selectedCategory === cat;
+              return (
 
-      {/* Category Pills Header */}
-      <View className="py-2">
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerClassName="px-6 gap-2"
-        >
-          {CATEGORIES.map((cat) => {
-            const isSelected = selectedCategory === cat;
-            return (
               <TouchableOpacity
                 key={cat}
                 onPress={() => setSelectedCategory(cat)}
@@ -305,8 +307,10 @@ export function EventsListScreen() {
           }
         />
       )}
+      </View>
 
       <StudentBottomNav />
     </SafeAreaView>
   );
 }
+
